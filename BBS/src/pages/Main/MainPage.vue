@@ -7,7 +7,7 @@
     </el-row>
     <el-row :gutter="5">
       <el-col :span="6">
-        <div class="pieChart">
+        <div id="pieChart">
         </div>
       </el-col>
       <el-col :span="12">
@@ -43,17 +43,61 @@ export default {
   props: ['status'], // 拿到了学生信息
   data () {
     return {
-      // 日历
+      myChart: null,
       date: new Date(),
       display: false,
       imagesBox: [{id: 0, idView: require('../../assets/images/backgroundimg/show1.jpg')},
         {id: 1, idView: require('../../assets/images/backgroundimg/show2.jpg')},
         {id: 2, idView: require('../../assets/images/backgroundimg/show3.jpg')},
         {id: 3, idView: require('../../assets/images/backgroundimg/show4.jpg')},
-        {id: 4, idView: require('../../assets/images/backgroundimg/show5.jpg')}]
+        {id: 4, idView: require('../../assets/images/backgroundimg/show5.jpg')}],
+      option: {
+        title: {
+          text: '图书分类',
+          left: 'center'
+        },
+        tooltip: {
+          trigger: 'item',
+          formatter: '{b} : {c} ({d}%)' // 提示的文本格式a b c d分别指系列、数据项、数值、百分比，详见文档
+        },
+        legend: {
+          orient: 'vertical',
+          left: 'left'
+        },
+        series: [
+          {
+            type: 'pie',
+            radius: '60%',
+            data: [
+              {value: 1048, name: '小说'},
+              {value: 735, name: '自然'},
+              {value: 580, name: '社科类'}
+            ],
+            emphasis: { // 触碰数据时的显示
+              itemStyle: {
+                shadowBlur: 10,
+                shadowOffsetX: 0,
+                shadowColor: 'rgba(0, 0, 0, 0.3)'
+              }
+            },
+            itemStyle: {
+              normal: {
+                label: {
+                  show: false
+                },
+                labelLine: {
+                  show: false
+                }
+              }
+            }
+          }
+        ]
+      }
     }
   },
   mounted () {
+    this.myChart = this.$echarts.init(document.getElementById('pieChart'))
+    this.myChart.setOption(this.option)
     setTimeout(() => {
       this.display = true
     }, 800)
@@ -62,9 +106,9 @@ export default {
 </script>
 
 <style scoped>
-.pieChart{
-  height: 325px;
-  background-color: pink;
+#pieChart{
+  padding-top: 10px;
+  height: 315px;
 }
 .main >>>.el-timeline-item__tail{
 border-left:3px solid #909399;
