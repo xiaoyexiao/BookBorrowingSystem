@@ -48,14 +48,14 @@ export default {
   data () {
     // 验证学号是不是为12位数字
     let validNumber = (rule, value, callback) => {
-      let reg = /\b\d{12}\b/
-      if (!reg.test(value)) {
-        callback(new Error('请输入正确学号'))
-      } else {
-        callback()
-      }
+      // let reg = /\b\d{12}\b/
+      // if (!reg.test(value)) {
+      //   callback(new Error('请输入正确学号'))
+      // } else {
+      //   callback()
+      // }
     }
-    // 验证两次密码是否相同是不是为12位数字
+    // 验证两次密码是否相同
     let validPsw = (rule, value, callback) => {
       if (this.form.psw !== value) {
         callback(new Error('两次密码不一致'))
@@ -117,11 +117,18 @@ export default {
   },
   methods: {
     onSubmit () {
+      this.$axios.post('http://112.74.32.189:8080/library/getStudent', {
+        account: this.$store.state.id
+      }).then((response) => {
+        console.log(response.data.data)
+        this.personData = response.data.data
+      })
       this.loading = true
       setTimeout(() => {
         this.loading = false
       }, 600)
       const timeJump = 1
+      // 延时跳转
       if (!this.timer) {
         this.second = timeJump
         this.show = false

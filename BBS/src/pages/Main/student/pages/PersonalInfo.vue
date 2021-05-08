@@ -16,11 +16,11 @@
         <div class="info3">
           <div style="display: inline-block;margin: 10px">
             <el-button class="infoButton" icon="el-icon-collection" circle></el-button>
-            <span class="borrowInfo">借阅总数：<span style="color: #3080FF;font-weight: bolder">{{borrowSum}}</span></span>
+            <span class="borrowInfo">借阅总数：<span style="color: #3080FF;font-weight: bolder">{{totalData.total}}</span></span>
           </div>
           <div style="display: inline-block;margin: 10px">
             <el-button class="infoButton" icon="el-icon-reading" circle></el-button>
-            <span class="borrowInfo">待还数量：<span style="color: #3080FF;font-weight: bolder">{{returnedSum}}</span></span>
+            <span class="borrowInfo">待还数量：<span style="color: #3080FF;font-weight: bolder">{{totalData.borrowingNumber}}</span></span>
           </div>
           <div style="display: inline-block;margin: 10px">
             <el-button class="infoButton" icon="el-icon-warning-outline" circle></el-button>
@@ -33,23 +33,23 @@
       <span>待还图书</span>
     </div>
     <div class="tableBorder">
-      <el-table class="table"  :data="uploadData"
-                :default-sort = "{prop: 'remainTime', order: 'ascending'}" height="340">
+      <el-table class="table"  :data="table"
+                :default-sort = "{prop: 'resting', order: 'ascending'}" height="340">
         <el-table-column width="20"></el-table-column>
-        <el-table-column prop="name" label="书名" width="180"></el-table-column>
-        <el-table-column prop="author" label="作者" width="150" sortable></el-table-column>
-        <el-table-column prop="style" label="类别" width="150"></el-table-column>
-        <el-table-column prop="wordCount" label="字数" width="150"></el-table-column>
-        <el-table-column prop="publisher" label="出版社" width="150"></el-table-column>
-        <el-table-column prop="remainTime" label="剩余借用时间/天" width="180" sortable>
+        <el-table-column prop="book.name" label="书名" width="180"></el-table-column>
+        <el-table-column prop="book.author" label="作者" width="150"></el-table-column>
+        <el-table-column prop="book.category" label="类别" width="150"></el-table-column>
+        <el-table-column prop="book.length" label="字数" width="150"></el-table-column>
+        <el-table-column prop="book.publisher" label="出版社" width="150"></el-table-column>
+        <el-table-column prop="resting" label="剩余借用时间/天" width="180" sortable>
           <template slot-scope="scope">
            <i class="el-icon-time"></i>
-           <span style="margin-left: 10px">{{ scope.row.remainTime }}</span>
+           <span style="margin-left: 10px">{{ scope.row.resting }}</span>
          </template>
         </el-table-column>
         <el-table-column label="操作" width="100">
           <template slot-scope="scope">
-            <el-button @click.native.prevent="defer(scope.row,uploadData)" type="text" size="medium">续租</el-button>
+            <el-button @click.native.prevent="defer(scope.row,table)" type="text" size="medium">续租</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -64,71 +64,59 @@ export default {
     return {
       personData: [],
       table: [],
-      tableData: [
-        {
-          name: '活着1',
-          author: '余华',
-          style: '小说',
-          wordCount: 120000,
-          publisher: '作家出版社',
-          remainTime: 7
-        },
-        {
-          name: '活着1',
-          author: '余华',
-          style: '小说',
-          wordCount: 120000,
-          publisher: '作家出版社',
-          remainTime: 4
-        }, {
-          name: '活着1',
-          author: '余华',
-          style: '小说',
-          wordCount: 120000,
-          publisher: '作家出版社',
-          remainTime: 12
-        }, {
-          name: '活着1',
-          author: '余华',
-          style: '小说',
-          wordCount: 120000,
-          publisher: '作家出版社',
-          remainTime: 2
-        }, {
-          name: '活着1',
-          author: '余华',
-          style: '小说',
-          wordCount: 120000,
-          publisher: '作家出版社',
-          remainTime: 5
-        }, {
-          name: '活着1',
-          author: '余华',
-          style: '小说',
-          wordCount: 120000,
-          publisher: '作家出版社',
-          remainTime: 1
-        }
-      ],
+      totalData: [],
+      // tableData: [
+      //   {
+      //     name: '活着1',
+      //     author: '余华',
+      //     style: '小说',
+      //     wordCount: 120000,
+      //     publisher: '作家出版社',
+      //     remainTime: 7
+      //   },
+      //   {
+      //     name: '活着1',
+      //     author: '余华',
+      //     style: '小说',
+      //     wordCount: 120000,
+      //     publisher: '作家出版社',
+      //     remainTime: 4
+      //   }, {
+      //     name: '活着1',
+      //     author: '余华',
+      //     style: '小说',
+      //     wordCount: 120000,
+      //     publisher: '作家出版社',
+      //     remainTime: 12
+      //   }, {
+      //     name: '活着1',
+      //     author: '余华',
+      //     style: '小说',
+      //     wordCount: 120000,
+      //     publisher: '作家出版社',
+      //     remainTime: 2
+      //   }, {
+      //     name: '活着1',
+      //     author: '余华',
+      //     style: '小说',
+      //     wordCount: 120000,
+      //     publisher: '作家出版社',
+      //     remainTime: 5
+      //   }, {
+      //     name: '活着1',
+      //     author: '余华',
+      //     style: '小说',
+      //     wordCount: 120000,
+      //     publisher: '作家出版社',
+      //     remainTime: 1
+      //   }
+      // ],
       // 不断更新的表单
       uploadData: [],
       // 初始表单
       oldTableData: [],
-      // 搜索框内容
-      search: '',
-      // 每页条数
-      pageSize: 7,
       // 当前页数
-      currentPage: 1,
-      nickName: 'XiaoYeXiao',
-      name: '彭俊辉',
-      number: '201827010220',
-      grade: 2018,
-      classInfo: '软件工程2班',
-      email: '947446714@qq.com',
-      phone: '19927533604',
-      borrowSum: 10,
-      returnedSum: 3
+      currentPage: 1
     }
   },
   methods: {
@@ -151,7 +139,7 @@ export default {
         if (action === 'confirm') {
           for (let i = 0; i < table.length; i++) {
             if (table[i] === row) {
-              table[i].remainTime += 30
+              table[i].resting += 30
               break
             }
           }
@@ -168,11 +156,21 @@ export default {
       console.log(response.data.data)
       this.personData = response.data.data
     })
-    this.$axios.post('http://112.74.32.189:8080/library/borrowRecord', {
-      account: this.$store.state.id
+    this.$axios.get('http://112.74.32.189:8080/library/borrowingBook', {
+      params: {
+        account: '5'
+      }
     }).then((response) => {
       console.log(response.data.data)
       this.table = response.data.data
+    })
+    this.$axios.get('http://112.74.32.189:8080/library/recordNumber', {
+      params: {
+        account: '5'
+      }
+    }).then((response) => {
+      // console.log(response.data.data)
+      this.totalData = response.data.data
     })
   }
 }

@@ -274,7 +274,7 @@ export default {
       this.uploadData = table
     },
     // 根据类别过滤
-    filterStyle (value, row, column) {
+    filterStyle (value, row) {
       return row.style === value
     },
     // 处理收藏按钮的点击
@@ -311,16 +311,16 @@ export default {
     // 根据书名、作者、类别搜索内容,注意开关为true时要过滤现存量为0的书
     searchTable () {
       this.uploadData = this.updatedTable()
-    },
-    // 获取表单数据
-    getTableData () {
-      this.oldTableData = this.tableData
-      this.uploadData = this.tableData
     }
   },
   // 加载组件时更新表单
   mounted () {
-    this.getTableData()
+    this.$axios.get('http://112.74.32.189:8080/library/getStudent', {params: {}})
+      .then((response) => {
+        console.log(response.data.data)
+        this.oldTableData = response.data.data
+        this.uploadData = response.data.data
+      })
   }
 }
 </script>

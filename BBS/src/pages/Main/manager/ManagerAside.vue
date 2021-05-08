@@ -87,7 +87,7 @@ export default {
   position: fixed;
   top:0px;
   left:0px;
-  height: 725px;
+  height: 1200px;
   width: 200px;
   background-color: #282E38;
   text-align: center;

@@ -2,32 +2,32 @@
   <div>
     <div class="main">
       <div class="table">
-        <el-table style="width: 100%" :data="uploadData.slice((currentPage-1)*pageSize,currentPage*pageSize)"
+        <el-table style="width: 100%" :data="uploadData.filter(item=>item.visible===true).slice((currentPage-1)*pageSize,currentPage*pageSize)"
                   v-loading="loading" :default-sort = "{prop: 'borrowDate', order: 'descending'}"  height="485">
           <el-table-column type="expand">
             <template slot-scope="props">
               <el-form label-position="left" inline class="demo-table-expand">
                 <el-form-item label="序列号">
-                  <span>{{ props.row.number }}</span>
+                  <span>{{ props.row.book.no }}</span>
                 </el-form-item>
                 <el-form-item label="书籍描述">
-                  <span>{{ props.row.description }}</span>
+                  <span>{{ props.row.book.summary }}</span>
                 </el-form-item>
               </el-form>
             </template>
           </el-table-column>
-          <el-table-column prop="name" label="书名" width="120"></el-table-column>
-          <el-table-column prop="author" label="作者" width="80"></el-table-column>
-          <el-table-column prop="style" label="类别" width="90"></el-table-column>
-          <el-table-column prop="wordCount" label="字数" width="80"></el-table-column>
-          <el-table-column prop="publisher" label="出版社" width="130"></el-table-column>
+          <el-table-column prop="book.name" label="书名" width="120"></el-table-column>
+          <el-table-column prop="book.author" label="作者" width="80"></el-table-column>
+          <el-table-column prop="book.category" label="类别" width="90"></el-table-column>
+          <el-table-column prop="book.length" label="字数" width="80"></el-table-column>
+          <el-table-column prop="book.publisher" label="出版社" width="130"></el-table-column>
           <el-table-column prop="borrowDate" label="借阅日期" width="140" sortable>
             <template slot-scope="scope">
               <i class="el-icon-time"></i>
               <span style="margin-left: 10px">{{ scope.row.borrowDate }}</span>
             </template>
           </el-table-column>
-          <el-table-column prop="status" label="状态" width="200" sortable></el-table-column>
+          <el-table-column prop="status" label="状态" width="200" :formatter="state"  sortable></el-table-column>
           <el-table-column label="操作" width="80">
             <template slot-scope="scope">
               <el-button @click.native.prevent="deleteRow(scope.row,uploadData)" type="text" size="medium">删除</el-button>
@@ -54,112 +54,7 @@ export default {
   name: 'BorrowInfo',
   data () {
     return {
-      tableData: [
-        {
-          name: '活着1',
-          author: '余华',
-          style: '小说',
-          wordCount: '12000',
-          publisher: '作家出版社',
-          borrowDate: '2018-12-03',
-          status: '借阅中-剩余时间/天：30',
-          number: '01',
-          description: '《活着》是作家余华的代表作之一，讲述了在大时代背景下，随着内战、三反五反，大跃进，文化大革命等社会变革，徐福贵的人生和家庭不断经受着苦难，到了最后所有亲人都先后离他而去，仅剩下年老的他和一头老牛相依为命。'
-        },
-        {
-          name: '活着1',
-          author: '余华',
-          style: '小说',
-          wordCount: '12000',
-          publisher: '作家出版社',
-          borrowDate: '2018-12-03',
-          status: '借阅中-剩余时间/天：30',
-          number: '01',
-          description: '《活着》是作家余华的代表作之一，讲述了在大时代背景下，随着内战、三反五反，大跃进，文化大革命等社会变革，徐福贵的人生和家庭不断经受着苦难，到了最后所有亲人都先后离他而去，仅剩下年老的他和一头老牛相依为命。'
-        }, {
-          name: '活着1',
-          author: '余华',
-          style: '小说',
-          wordCount: '12000',
-          publisher: '作家出版社',
-          borrowDate: '2018-12-03',
-          status: '借阅中-剩余时间/天：30',
-          number: '01',
-          description: '《活着》是作家余华的代表作之一，讲述了在大时代背景下，随着内战、三反五反，大跃进，文化大革命等社会变革，徐福贵的人生和家庭不断经受着苦难，到了最后所有亲人都先后离他而去，仅剩下年老的他和一头老牛相依为命。'
-        }, {
-          name: '活着1',
-          author: '余华',
-          style: '小说',
-          wordCount: '12000',
-          publisher: '作家出版社',
-          borrowDate: '2018-12-03',
-          status: '借阅中-剩余时间/天：30',
-          number: '01',
-          description: '《活着》是作家余华的代表作之一，讲述了在大时代背景下，随着内战、三反五反，大跃进，文化大革命等社会变革，徐福贵的人生和家庭不断经受着苦难，到了最后所有亲人都先后离他而去，仅剩下年老的他和一头老牛相依为命。'
-        }, {
-          name: '活着1',
-          author: '余华',
-          style: '小说',
-          wordCount: '12000',
-          publisher: '作家出版社',
-          borrowDate: '2018-12-03',
-          status: '借阅中-剩余时间/天：30',
-          number: '01',
-          description: '《活着》是作家余华的代表作之一，讲述了在大时代背景下，随着内战、三反五反，大跃进，文化大革命等社会变革，徐福贵的人生和家庭不断经受着苦难，到了最后所有亲人都先后离他而去，仅剩下年老的他和一头老牛相依为命。'
-        }, {
-          name: '活着1',
-          author: '余华',
-          style: '小说',
-          wordCount: '12000',
-          publisher: '作家出版社',
-          borrowDate: '2018-12-03',
-          status: '借阅中-剩余时间/天：30',
-          number: '01',
-          description: '《活着》是作家余华的代表作之一，讲述了在大时代背景下，随着内战、三反五反，大跃进，文化大革命等社会变革，徐福贵的人生和家庭不断经受着苦难，到了最后所有亲人都先后离他而去，仅剩下年老的他和一头老牛相依为命。'
-        }, {
-          name: '活着1',
-          author: '余华',
-          style: '小说',
-          wordCount: '12000',
-          publisher: '作家出版社',
-          borrowDate: '2018-12-03',
-          status: '借阅中-剩余时间/天：30',
-          number: '01',
-          description: '《活着》是作家余华的代表作之一，讲述了在大时代背景下，随着内战、三反五反，大跃进，文化大革命等社会变革，徐福贵的人生和家庭不断经受着苦难，到了最后所有亲人都先后离他而去，仅剩下年老的他和一头老牛相依为命。'
-        }, {
-          name: '活着1',
-          author: '余华',
-          style: '小说',
-          wordCount: '12000',
-          publisher: '作家出版社',
-          borrowDate: '2018-12-03',
-          status: '借阅中-剩余时间/天：30',
-          number: '01',
-          description: '《活着》是作家余华的代表作之一，讲述了在大时代背景下，随着内战、三反五反，大跃进，文化大革命等社会变革，徐福贵的人生和家庭不断经受着苦难，到了最后所有亲人都先后离他而去，仅剩下年老的他和一头老牛相依为命。'
-        },
-        {
-          name: '活着1',
-          author: '余华',
-          style: '小说',
-          wordCount: '12000',
-          publisher: '作家出版社',
-          borrowDate: '2018-12-03',
-          status: '已归还',
-          number: '01',
-          description: '《活着》是作家余华的代表作之一，讲述了在大时代背景下，随着内战、三反五反，大跃进，文化大革命等社会变革，徐福贵的人生和家庭不断经受着苦难，到了最后所有亲人都先后离他而去，仅剩下年老的他和一头老牛相依为命。'
-        },
-        {
-          name: '活着1',
-          author: '余华',
-          style: '小说',
-          wordCount: '12000',
-          publisher: '作家出版社',
-          borrowDate: '2018-12-03',
-          status: '已归还',
-          number: '01',
-          description: '《活着》是作家余华的代表作之一，讲述了在大时代背景下，随着内战、三反五反，大跃进，文化大革命等社会变革，徐福贵的人生和家庭不断经受着苦难，到了最后所有亲人都先后离他而去，仅剩下年老的他和一头老牛相依为命。'
-        }
-      ],
+      table: [],
       // 刷新开关
       loading: false,
       // 不断更新的表单
@@ -175,6 +70,11 @@ export default {
     }
   },
   methods: {
+    // 处理状态的文本格式
+    state (row, column) {
+      return row.status === false ? `借阅中-剩余时间/天:${row.resting}` : '已归还'
+    },
+    // 翻页更新
     handleCurrentChange (val) {
       this.currentPage = val
       this.loading = true
@@ -192,9 +92,10 @@ export default {
       let newList = []
       if (this.search !== '') {
         this.oldTableData.forEach(item => {
-          if (item.name.toLowerCase().indexOf(this.search.toLowerCase()) !== -1 ||
-            item.number.toLowerCase().indexOf(this.search.toLowerCase()) !== -1 ||
-            item.style.toLowerCase().indexOf(this.search.toLowerCase()) !== -1) {
+          if (item.book.name.toLowerCase().indexOf(this.search.toLowerCase()) !== -1 ||
+            item.book.no.toString().indexOf(this.search.toLowerCase()) !== -1 ||
+            item.book.category.toLowerCase().indexOf(this.search.toLowerCase()) !== -1 ||
+          item.book.author.toLowerCase().indexOf(this.search.toLowerCase()) !== -1) {
             newList.push(item)
           }
         })
@@ -214,24 +115,33 @@ export default {
           message: '删除成功!'
         })
         if (action === 'confirm') {
+          console.log(row.order)
+          this.$axios.get('http://112.74.32.189:8080/library/hideRecord', {
+            params: {
+              order: row.order
+            }
+          }).then((response) => {
+            console.log(response.data.data)
+          })
           for (let i = 0; i < table.length; i++) {
             if (table[i] === row) {
-              table.splice(i, 1)
+              table[i].visible = false
               break
             }
           }
         }
       })
-    },
-    // 获取表单数据
-    getTableData () {
-      this.oldTableData = this.tableData
-      this.uploadData = this.tableData
     }
   },
   // 加载组件时更新表单
   mounted () {
-    this.getTableData()
+    this.$axios.post('http://112.74.32.189:8080/library/borrowRecord', {
+      account: '5'
+    }).then((response) => {
+      // console.log(response.data.data)
+      this.oldTableData = response.data.data
+      this.uploadData = response.data.data
+    })
   }
 }
 </script>

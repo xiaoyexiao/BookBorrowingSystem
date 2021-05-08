@@ -176,16 +176,16 @@ export default {
           }
         }
       })
-    },
-    // 获取表单数据
-    getTableData () {
-      this.oldTableData = this.tableData
-      this.uploadData = this.tableData
     }
   },
   // 加载组件时更新表单
   mounted () {
-    this.getTableData()
+    this.$axios.get('http://112.74.32.189:8080/library/getAllRecord', {params: {}})
+      .then((response) => {
+        console.log(response.data.data)
+      })
+    this.oldTableData = this.tableData
+    this.uploadData = this.tableData
   }
 }
 </script>
