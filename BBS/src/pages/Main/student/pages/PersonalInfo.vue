@@ -1,0 +1,263 @@
+<template>
+  <div class="PersonalInfo">
+      <el-card class="box-card">
+        <i class="el-icon-user-solid"></i>
+        <span class="nickName">{{personData.name}}</span>
+        <div class="info1">
+          <p style="padding: 8px">姓名：{{personData.name}}</p>
+          <p style="padding: 8px">学号：{{personData.number}}</p>
+          <p style="padding: 8px">年级：{{personData.grade}}级</p>
+          <p style="padding: 8px">专业班级：{{personData.major+personData.clazz}}班</p>
+        </div>
+        <div class="info2">
+          <p style="padding: 10px">电子邮箱：{{personData.email}}</p>
+          <p style="padding: 10px">手机：{{personData.phone}}</p>
+        </div>
+        <div class="info3">
+          <div style="display: inline-block;margin: 10px">
+            <el-button class="infoButton" icon="el-icon-collection" circle></el-button>
+            <span class="borrowInfo">借阅总数：<span style="color: #3080FF;font-weight: bolder">{{borrowSum}}</span></span>
+          </div>
+          <div style="display: inline-block;margin: 10px">
+            <el-button class="infoButton" icon="el-icon-reading" circle></el-button>
+            <span class="borrowInfo">待还数量：<span style="color: #3080FF;font-weight: bolder">{{returnedSum}}</span></span>
+          </div>
+          <div style="display: inline-block;margin: 10px">
+            <el-button class="infoButton" icon="el-icon-warning-outline" circle></el-button>
+            <span class="borrowInfo">账号状态：<span style="color: #3080FF;font-weight: bolder">安全</span></span>
+          </div>
+        </div>
+      </el-card>
+    <div class="tableHeader">
+      <i class="el-icon-s-order" style="color: #F57D2D"></i>
+      <span>待还图书</span>
+    </div>
+    <div class="tableBorder">
+      <el-table class="table"  :data="uploadData"
+                :default-sort = "{prop: 'remainTime', order: 'ascending'}" height="340">
+        <el-table-column width="20"></el-table-column>
+        <el-table-column prop="name" label="书名" width="180"></el-table-column>
+        <el-table-column prop="author" label="作者" width="150" sortable></el-table-column>
+        <el-table-column prop="style" label="类别" width="150"></el-table-column>
+        <el-table-column prop="wordCount" label="字数" width="150"></el-table-column>
+        <el-table-column prop="publisher" label="出版社" width="150"></el-table-column>
+        <el-table-column prop="remainTime" label="剩余借用时间/天" width="180" sortable>
+          <template slot-scope="scope">
+           <i class="el-icon-time"></i>
+           <span style="margin-left: 10px">{{ scope.row.remainTime }}</span>
+         </template>
+        </el-table-column>
+        <el-table-column label="操作" width="100">
+          <template slot-scope="scope">
+            <el-button @click.native.prevent="defer(scope.row,uploadData)" type="text" size="medium">续租</el-button>
+          </template>
+        </el-table-column>
+      </el-table>
+    </div>
+  </div>
+</template>
+
+<script>
+export default {
+  name: 'PersonalInfo',
+  data () {
+    return {
+      personData: [],
+      table: [],
+      tableData: [
+        {
+          name: '活着1',
+          author: '余华',
+          style: '小说',
+          wordCount: 120000,
+          publisher: '作家出版社',
+          remainTime: 7
+        },
+        {
+          name: '活着1',
+          author: '余华',
+          style: '小说',
+          wordCount: 120000,
+          publisher: '作家出版社',
+          remainTime: 4
+        }, {
+          name: '活着1',
+          author: '余华',
+          style: '小说',
+          wordCount: 120000,
+          publisher: '作家出版社',
+          remainTime: 12
+        }, {
+          name: '活着1',
+          author: '余华',
+          style: '小说',
+          wordCount: 120000,
+          publisher: '作家出版社',
+          remainTime: 2
+        }, {
+          name: '活着1',
+          author: '余华',
+          style: '小说',
+          wordCount: 120000,
+          publisher: '作家出版社',
+          remainTime: 5
+        }, {
+          name: '活着1',
+          author: '余华',
+          style: '小说',
+          wordCount: 120000,
+          publisher: '作家出版社',
+          remainTime: 1
+        }
+      ],
+      // 不断更新的表单
+      uploadData: [],
+      // 初始表单
+      oldTableData: [],
+      // 搜索框内容
+      search: '',
+      // 每页条数
+      pageSize: 7,
+      // 当前页数
+      currentPage: 1,
+      nickName: 'XiaoYeXiao',
+      name: '彭俊辉',
+      number: '201827010220',
+      grade: 2018,
+      classInfo: '软件工程2班',
+      email: '947446714@qq.com',
+      phone: '19927533604',
+      borrowSum: 10,
+      returnedSum: 3
+    }
+  },
+  methods: {
+    // 获取表单数据
+    getTableData () {
+      this.oldTableData = this.tableData
+      this.uploadData = this.tableData
+    },
+    // 书籍续租
+    defer (row, table) {
+      this.$confirm('延期还书?(可延长30天)', '提示', {
+        cancelButtonText: '取消',
+        confirmButtonText: '确定',
+        type: 'warning'
+      }).then((action) => {
+        this.$message({
+          type: 'success',
+          message: '续租成功!'
+        })
+        if (action === 'confirm') {
+          for (let i = 0; i < table.length; i++) {
+            if (table[i] === row) {
+              table[i].remainTime += 30
+              break
+            }
+          }
+        }
+      })
+    }
+  },
+  // 加载组件时更新表单
+  mounted () {
+    this.getTableData()
+    this.$axios.post('http://112.74.32.189:8080/library/getStudent', {
+      account: this.$store.state.id
+    }).then((response) => {
+      console.log(response.data.data)
+      this.personData = response.data.data
+    })
+    this.$axios.post('http://112.74.32.189:8080/library/borrowRecord', {
+      account: this.$store.state.id
+    }).then((response) => {
+      console.log(response.data.data)
+      this.table = response.data.data
+    })
+  }
+}
+</script>
+<style scoped>
+.PersonalInfo{
+  line-height: 10px;
+  font-size: 20px;
+}
+.box-card{
+  text-align: left;
+  position: relative;
+  margin: 0 auto;
+  background-color: snow;
+  border-radius: 10px;
+  width: 1200px;
+  height: 200px;
+}
+.el-icon-user-solid{
+  font-size: 100px;
+  color: #3080FF;
+  position: relative;
+  left: 50px;
+  top: 18px;
+}
+.nickName{
+  position: relative;
+  left: 70px;
+  bottom: 55px;
+  line-height: 10px;
+}
+.info1{
+  position: relative;
+  left: 170px;
+  bottom: 60px;
+  width: 220px;
+  border-right: #ddd solid 3px;
+  font-size: 15px;
+}
+.info2{
+  position: relative;
+  left: 400px;
+  top: -163px;
+  width: 250px;
+  height: 102px;
+  border-right: #ddd solid 3px;
+  font-size: 15px;
+  padding-left: 15px;
+}
+.info3{
+  position: relative;
+  left: 700px;
+  top: -300px;
+  width: 700px;
+  height: 500px;
+}
+.infoButton{
+  font-size: 30px;
+  margin: 20px 50px 30px 20px ;
+  color: #3080FF;
+  background-color: #E4E7ED;
+}
+.borrowInfo{
+  display: block;
+  font-size: 15px;
+}
+.tableHeader{
+  width: 100px;
+  font-size: 16px;
+  position: relative;
+  left: 20px;
+  height: 50px;
+  line-height: 50px;
+  font-weight: bold;
+}
+.tableBorder{
+  padding-bottom: 20px;
+  border-radius: 10px;
+  margin: 0 auto;
+  width: 1200px;
+  height: 330px;
+  background-color: #FFFFFF;
+}
+.table{
+  margin: 0px auto;
+  width: 1120px;
+}
+</style>

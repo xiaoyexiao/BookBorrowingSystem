@@ -1,0 +1,265 @@
+<template>
+  <div>
+    <div class="main">
+      <div class="table">
+        <el-table style="width: 100%" :data="uploadData.slice((currentPage-1)*pageSize,currentPage*pageSize)"
+                  v-loading="loading" :default-sort = "{prop: 'borrowDate', order: 'descending'}"  height="485">
+          <el-table-column type="expand">
+            <template slot-scope="props">
+              <el-form label-position="left" inline class="demo-table-expand">
+                <el-form-item label="序列号">
+                  <span>{{ props.row.number }}</span>
+                </el-form-item>
+                <el-form-item label="书籍描述">
+                  <span>{{ props.row.description }}</span>
+                </el-form-item>
+              </el-form>
+            </template>
+          </el-table-column>
+          <el-table-column prop="name" label="书名" width="120"></el-table-column>
+          <el-table-column prop="author" label="作者" width="80"></el-table-column>
+          <el-table-column prop="style" label="类别" width="90"></el-table-column>
+          <el-table-column prop="wordCount" label="字数" width="80"></el-table-column>
+          <el-table-column prop="publisher" label="出版社" width="130"></el-table-column>
+          <el-table-column prop="borrowDate" label="借阅日期" width="140" sortable>
+            <template slot-scope="scope">
+              <i class="el-icon-time"></i>
+              <span style="margin-left: 10px">{{ scope.row.borrowDate }}</span>
+            </template>
+          </el-table-column>
+          <el-table-column prop="status" label="状态" width="200" sortable></el-table-column>
+          <el-table-column label="操作" width="80">
+            <template slot-scope="scope">
+              <el-button @click.native.prevent="deleteRow(scope.row,uploadData)" type="text" size="medium">删除</el-button>
+            </template>
+          </el-table-column>
+          <el-table-column>
+            <template slot="header" slot-scope="scope">
+              <el-input prefix-icon="el-icon-search" v-model="search" size="mini" placeholder="输入关键字搜索" @input="searchTable"/>
+            </template>
+          </el-table-column>
+        </el-table>
+        <div class="pagination">
+          <el-pagination @current-change="handleCurrentChange" :page-size="pageSize"
+                         layout="total,prev, pager, next, jumper" :total="this.uploadData.length" background >
+          </el-pagination>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script>
+export default {
+  name: 'BorrowInfo',
+  data () {
+    return {
+      tableData: [
+        {
+          name: '活着1',
+          author: '余华',
+          style: '小说',
+          wordCount: '12000',
+          publisher: '作家出版社',
+          borrowDate: '2018-12-03',
+          status: '借阅中-剩余时间/天：30',
+          number: '01',
+          description: '《活着》是作家余华的代表作之一，讲述了在大时代背景下，随着内战、三反五反，大跃进，文化大革命等社会变革，徐福贵的人生和家庭不断经受着苦难，到了最后所有亲人都先后离他而去，仅剩下年老的他和一头老牛相依为命。'
+        },
+        {
+          name: '活着1',
+          author: '余华',
+          style: '小说',
+          wordCount: '12000',
+          publisher: '作家出版社',
+          borrowDate: '2018-12-03',
+          status: '借阅中-剩余时间/天：30',
+          number: '01',
+          description: '《活着》是作家余华的代表作之一，讲述了在大时代背景下，随着内战、三反五反，大跃进，文化大革命等社会变革，徐福贵的人生和家庭不断经受着苦难，到了最后所有亲人都先后离他而去，仅剩下年老的他和一头老牛相依为命。'
+        }, {
+          name: '活着1',
+          author: '余华',
+          style: '小说',
+          wordCount: '12000',
+          publisher: '作家出版社',
+          borrowDate: '2018-12-03',
+          status: '借阅中-剩余时间/天：30',
+          number: '01',
+          description: '《活着》是作家余华的代表作之一，讲述了在大时代背景下，随着内战、三反五反，大跃进，文化大革命等社会变革，徐福贵的人生和家庭不断经受着苦难，到了最后所有亲人都先后离他而去，仅剩下年老的他和一头老牛相依为命。'
+        }, {
+          name: '活着1',
+          author: '余华',
+          style: '小说',
+          wordCount: '12000',
+          publisher: '作家出版社',
+          borrowDate: '2018-12-03',
+          status: '借阅中-剩余时间/天：30',
+          number: '01',
+          description: '《活着》是作家余华的代表作之一，讲述了在大时代背景下，随着内战、三反五反，大跃进，文化大革命等社会变革，徐福贵的人生和家庭不断经受着苦难，到了最后所有亲人都先后离他而去，仅剩下年老的他和一头老牛相依为命。'
+        }, {
+          name: '活着1',
+          author: '余华',
+          style: '小说',
+          wordCount: '12000',
+          publisher: '作家出版社',
+          borrowDate: '2018-12-03',
+          status: '借阅中-剩余时间/天：30',
+          number: '01',
+          description: '《活着》是作家余华的代表作之一，讲述了在大时代背景下，随着内战、三反五反，大跃进，文化大革命等社会变革，徐福贵的人生和家庭不断经受着苦难，到了最后所有亲人都先后离他而去，仅剩下年老的他和一头老牛相依为命。'
+        }, {
+          name: '活着1',
+          author: '余华',
+          style: '小说',
+          wordCount: '12000',
+          publisher: '作家出版社',
+          borrowDate: '2018-12-03',
+          status: '借阅中-剩余时间/天：30',
+          number: '01',
+          description: '《活着》是作家余华的代表作之一，讲述了在大时代背景下，随着内战、三反五反，大跃进，文化大革命等社会变革，徐福贵的人生和家庭不断经受着苦难，到了最后所有亲人都先后离他而去，仅剩下年老的他和一头老牛相依为命。'
+        }, {
+          name: '活着1',
+          author: '余华',
+          style: '小说',
+          wordCount: '12000',
+          publisher: '作家出版社',
+          borrowDate: '2018-12-03',
+          status: '借阅中-剩余时间/天：30',
+          number: '01',
+          description: '《活着》是作家余华的代表作之一，讲述了在大时代背景下，随着内战、三反五反，大跃进，文化大革命等社会变革，徐福贵的人生和家庭不断经受着苦难，到了最后所有亲人都先后离他而去，仅剩下年老的他和一头老牛相依为命。'
+        }, {
+          name: '活着1',
+          author: '余华',
+          style: '小说',
+          wordCount: '12000',
+          publisher: '作家出版社',
+          borrowDate: '2018-12-03',
+          status: '借阅中-剩余时间/天：30',
+          number: '01',
+          description: '《活着》是作家余华的代表作之一，讲述了在大时代背景下，随着内战、三反五反，大跃进，文化大革命等社会变革，徐福贵的人生和家庭不断经受着苦难，到了最后所有亲人都先后离他而去，仅剩下年老的他和一头老牛相依为命。'
+        },
+        {
+          name: '活着1',
+          author: '余华',
+          style: '小说',
+          wordCount: '12000',
+          publisher: '作家出版社',
+          borrowDate: '2018-12-03',
+          status: '已归还',
+          number: '01',
+          description: '《活着》是作家余华的代表作之一，讲述了在大时代背景下，随着内战、三反五反，大跃进，文化大革命等社会变革，徐福贵的人生和家庭不断经受着苦难，到了最后所有亲人都先后离他而去，仅剩下年老的他和一头老牛相依为命。'
+        },
+        {
+          name: '活着1',
+          author: '余华',
+          style: '小说',
+          wordCount: '12000',
+          publisher: '作家出版社',
+          borrowDate: '2018-12-03',
+          status: '已归还',
+          number: '01',
+          description: '《活着》是作家余华的代表作之一，讲述了在大时代背景下，随着内战、三反五反，大跃进，文化大革命等社会变革，徐福贵的人生和家庭不断经受着苦难，到了最后所有亲人都先后离他而去，仅剩下年老的他和一头老牛相依为命。'
+        }
+      ],
+      // 刷新开关
+      loading: false,
+      // 不断更新的表单
+      uploadData: [],
+      // 初始表单
+      oldTableData: [],
+      // 搜索框内容
+      search: '',
+      // 每页条数
+      pageSize: 7,
+      // 当前页数
+      currentPage: 1
+    }
+  },
+  methods: {
+    handleCurrentChange (val) {
+      this.currentPage = val
+      this.loading = true
+      setTimeout(() => {
+        this.loading = false
+      }, 300)
+    },
+    // 根据搜索框搜索内容
+    searchTable () {
+      this.loading = true
+      setTimeout(() => {
+        this.loading = false
+      }, 300)
+      this.currentPage = 1
+      let newList = []
+      if (this.search !== '') {
+        this.oldTableData.forEach(item => {
+          if (item.name.toLowerCase().indexOf(this.search.toLowerCase()) !== -1 ||
+            item.number.toLowerCase().indexOf(this.search.toLowerCase()) !== -1 ||
+            item.style.toLowerCase().indexOf(this.search.toLowerCase()) !== -1) {
+            newList.push(item)
+          }
+        })
+        this.uploadData = newList
+      } else {
+        this.uploadData = this.oldTableData
+      }
+    },
+    deleteRow (row, table) {
+      this.$confirm('确认删除该记录?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then((action) => {
+        this.$message({
+          type: 'success',
+          message: '删除成功!'
+        })
+        if (action === 'confirm') {
+          for (let i = 0; i < table.length; i++) {
+            if (table[i] === row) {
+              table.splice(i, 1)
+              break
+            }
+          }
+        }
+      })
+    },
+    // 获取表单数据
+    getTableData () {
+      this.oldTableData = this.tableData
+      this.uploadData = this.tableData
+    }
+  },
+  // 加载组件时更新表单
+  mounted () {
+    this.getTableData()
+  }
+}
+</script>
+
+<style scoped>
+.main{
+  border-radius: 10px;
+  margin: 10px 70px;
+  width: 1200px;
+  height: 595px;
+  background-color: #FFFFFF;
+}
+/*展开栏*/
+.main >>> .demo-table-expand label{
+  width: 80px;
+  color: #99a9bf;
+  display: inline;
+}
+.main >>> .demo-table-expand .el-form-item {
+  margin-right: 0;
+  margin-bottom: 0;
+}
+.table{
+  margin: 10px 20px 20px 40px ;
+  width: 1120px;
+  height: 500px;
+}
+.pagination{
+  margin: 30px auto;
+}
+</style>
