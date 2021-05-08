@@ -34,7 +34,7 @@
     </div>
     <div class="tableBorder">
       <el-table class="table"  :data="table"
-                :default-sort = "{prop: 'resting', order: 'ascending'}" height="340">
+                :default-sort = "{prop: 'resting', order: 'ascending'}" height="370">
         <el-table-column width="20"></el-table-column>
         <el-table-column prop="book.name" label="书名" width="180"></el-table-column>
         <el-table-column prop="book.author" label="作者" width="150"></el-table-column>
@@ -251,7 +251,7 @@ export default {
   border-radius: 10px;
   margin: 0 auto;
   width: 1200px;
-  height: 330px;
+  height: 350px;
   background-color: #FFFFFF;
 }
 .table{

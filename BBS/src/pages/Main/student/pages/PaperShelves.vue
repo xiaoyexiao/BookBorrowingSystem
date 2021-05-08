@@ -316,7 +316,7 @@ export default {
   margin: 0 15px;
   padding-left: 10px;
   width: 1300px;
-  height: 595px;
+  height: 620px;
   background-color: #FFFFFF;
 }
 .table{
@@ -355,6 +355,6 @@ export default {
   padding: 0px;
 }
 .pagination{
-  margin: 30px auto;
+  margin: 40px auto;
 }
 </style>

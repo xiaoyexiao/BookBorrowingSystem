@@ -151,7 +151,7 @@ export default {
   border-radius: 10px;
   margin: 10px 70px;
   width: 1200px;
-  height: 595px;
+  height: 620px;
   background-color: #FFFFFF;
 }
 /*展开栏*/
@@ -170,6 +170,6 @@ export default {
   height: 500px;
 }
 .pagination{
-  margin: 30px auto;
+  margin: 40px auto;
 }
 </style>

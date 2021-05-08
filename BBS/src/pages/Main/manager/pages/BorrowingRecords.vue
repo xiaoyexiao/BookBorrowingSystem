@@ -195,7 +195,7 @@ export default {
   border-radius: 10px;
   margin: 0 15px;
   width: 1300px;
-  height: 595px;
+  height: 620px;
   background-color: #FFFFFF;
 }
 .table{
@@ -204,6 +204,6 @@ export default {
   width: 1220px;
 }
 .pagination{
-  margin: 25px;
+  margin: 40px;
 }
 </style>

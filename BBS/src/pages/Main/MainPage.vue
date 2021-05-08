@@ -1,31 +1,37 @@
 <template>
   <div class="main">
-    <el-row :gutter="10">
+    <el-row>
+      <el-col :span="24">
+        <img src="../../assets/images/backgroundimg/header.jpg" style="width: 100%">
+      </el-col>
+    </el-row>
+    <el-row :gutter="5">
       <el-col :span="6">
-        <div class="personalBoard" style="margin: 20px 50px 0px;padding-top: 50px">
-          <el-timeline>
-            <el-timeline-item
-              v-for="(activity, index) in activities"
-              :key="index"
-              :color="activity.color"
-              :timestamp="activity.timestamp">
-              {{activity.content}}
-            </el-timeline-item>
-          </el-timeline>
+        <div class="pieChart">
         </div>
       </el-col>
-      <el-col :span="13"><div class="noticeBoard">
-        <el-carousel height="400px">
+      <el-col :span="12">
+        <div class="noticeBoard">
+        <el-carousel height="310px">
           <el-carousel-item v-for="item in imagesBox" :key="item.id">
             <img :src="item.idView" class="image">
           </el-carousel-item>
         </el-carousel>
-      </div></el-col>
-      <el-col :span="5">
+        </div>
+      </el-col>
+      <el-col :span="6">
         <div class="asideBoard">
           <el-calendar v-model="date">
           </el-calendar>
         </div>
+      </el-col>
+    </el-row>
+    <el-row>
+      <el-col :span="12">
+        <div class="footerImg1"><img src="../../assets/images/backgroundimg/show6.jpg" alt=""></div>
+      </el-col>
+      <el-col :span="12">
+        <div class="footerImg2"><img src="../../assets/images/backgroundimg/show7.jpg" alt=""></div>
       </el-col>
     </el-row>
   </div>
@@ -40,24 +46,11 @@ export default {
       // 日历
       date: new Date(),
       display: false,
-      imagesBox: [{id: 0, idView: require('../../assets/images/backgroundimg/1.png')},
-        {id: 1, idView: require('../../assets/images/backgroundimg/2.png')},
-        {id: 2, idView: require('../../assets/images/backgroundimg/3.jpg')}],
-      activities: [
-        {
-          content: '借阅图书“活着”',
-          timestamp: '2018-04-12 20:46',
-          color: '#F57D2D'
-        }, {
-          content: '借阅图书“平凡的世界”',
-          timestamp: '2018-04-03 20:46',
-          color: '#F57D2D'
-        }, {
-          content: '借阅图书“红楼梦”',
-          timestamp: '2018-04-03 20:46',
-          color: '#F57D2D'
-        }
-      ]
+      imagesBox: [{id: 0, idView: require('../../assets/images/backgroundimg/show1.jpg')},
+        {id: 1, idView: require('../../assets/images/backgroundimg/show2.jpg')},
+        {id: 2, idView: require('../../assets/images/backgroundimg/show3.jpg')},
+        {id: 3, idView: require('../../assets/images/backgroundimg/show4.jpg')},
+        {id: 4, idView: require('../../assets/images/backgroundimg/show5.jpg')}]
     }
   },
   mounted () {
@@ -69,18 +62,15 @@ export default {
 </script>
 
 <style scoped>
-.personalBoard{
-  border-radius: 8px;
-  height: 400px;
-  margin: 5px;
+.pieChart{
+  height: 325px;
+  background-color: pink;
 }
 .main >>>.el-timeline-item__tail{
 border-left:3px solid #909399;
 }
 /*走马灯*/
 .noticeBoard{
-  border-radius: 8px;
-  height: 400px;
   margin: 5px;
 }
 .image{
@@ -90,9 +80,7 @@ border-left:3px solid #909399;
 }
 /*日历*/
 .asideBoard{
-  border-radius: 8px;
-  height: 400px;
-  margin: 5px;
+  margin: 0 60px 0;
 }
 .asideBoard >>> .el-calendar{
   border-radius: 8px;
@@ -106,8 +94,24 @@ border-left:3px solid #909399;
   border-radius: 10px;
 }
 .asideBoard >>> .el-calendar-table .el-calendar-day{
-  height: 40px;
-  padding: 5px;
+  height: 32px;
+  padding: 2px 5px 2px;
   -webkit-text-stroke-width: thin;
+}
+.asideBoard >>> .el-calendar__body{
+  padding: 0;
+}
+.footerImg1{
+  margin: 20px 10px 10px 20px;
+  height: 200px;
+}
+.footerImg2{
+  margin: 20px 20px 10px 10px;
+  height: 200px;
+}
+img{
+  width: 100%;
+  height: 100%;
+  border-radius: 8px;
 }
 </style>

@@ -218,10 +218,10 @@ export default {
 <style scoped>
 .main {
   margin: 0 15px;
-  padding: 30px 50px;
+  padding: 30px 50px 10px;
   border-radius: 10px;
   width: 1200px;
-  height: 540px;
+  height: 580px;
   background-color: #FFFFFF;
 }
 .span{

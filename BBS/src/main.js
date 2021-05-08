@@ -8,10 +8,12 @@ import ElementUI from 'element-ui'
 import VueRouter from 'vue-router'
 import store from './store/store'
 import axios from 'axios'
+let echarts = require('echarts')
+
 Vue.use(ElementUI)
 Vue.use(VueRouter)
 Vue.prototype.$axios = axios
-
+Vue.prototype.$echarts = echarts
 const originalPush = VueRouter.prototype.push
 VueRouter.prototype.push = function push (location) {
   return originalPush.call(this, location).catch(err => err)

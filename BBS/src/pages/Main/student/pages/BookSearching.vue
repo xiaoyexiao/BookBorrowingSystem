@@ -331,7 +331,7 @@ export default {
   border-radius: 10px;
   padding-left: 10px;
   width: 1300px;
-  height: 608px;
+  height: 620px;
   background-color: #FFFFFF;
 }
 .header{
@@ -398,6 +398,6 @@ export default {
   padding: 0px;
 }
 .pagination{
-  margin: 15px auto;
+  margin: 20px auto;
 }
 </style>

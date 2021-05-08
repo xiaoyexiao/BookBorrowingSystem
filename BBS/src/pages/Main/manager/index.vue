@@ -72,9 +72,9 @@ div,body,html{
 /*页头*/
 .pageHeader{
   position: fixed;
-  top:50px;
+  top:40px;
   left:200px;
-  height: 50px;
+  height: 40px;
   width: 1336px;
   line-height: 50px;
   font-weight: bolder;
@@ -84,8 +84,8 @@ div,body,html{
 .main {
   position: fixed;
   left: 200px;
-  top: 100px;
-  height: 725px;
+  top: 80px;
+  height: 800px;
   width: 1336px;
   background-color: #E4E7ED;
   text-align: center;

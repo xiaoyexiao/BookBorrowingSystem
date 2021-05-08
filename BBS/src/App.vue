@@ -28,6 +28,9 @@ export default {
   }
 }
 </script>
-
 <style>
+*{
+  padding: 0;
+  margin-left: 0;
+}
 </style>

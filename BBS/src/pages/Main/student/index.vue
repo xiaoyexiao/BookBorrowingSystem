@@ -73,9 +73,9 @@ div,body,html{
   position: fixed;
   top:50px;
   left:200px;
-  height: 50px;
+  height: 40px;
   width: 1336px;
-  line-height: 50px;
+  line-height: 40px;
   font-weight: bolder;
   padding-left: 25px;
   background-color: #E4E7ED;
@@ -83,8 +83,8 @@ div,body,html{
 .main {
   position: fixed;
   left: 200px;
-  top: 100px;
-  height: 725px;
+  top: 90px;
+  height: 800px;
   width: 1336px;
   background-color: #E4E7ED;
   text-align: center;
