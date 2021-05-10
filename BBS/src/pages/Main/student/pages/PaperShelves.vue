@@ -3,27 +3,26 @@
     <div class="main">
       <div class="table">
         <el-table style="width: 100%" :data="uploadData.slice((currentPage-1)*pageSize,currentPage*pageSize)"
-                  v-loading="loading" height="486" :default-sort = "{prop: 'borrowDate', order: 'descending'}" >
+                  v-loading="loading" height="486">
           <el-table-column width="10"></el-table-column>
           <el-table-column type="expand">
             <template slot-scope="props">
               <el-form label-position="left" inline class="demo-table-expand">
-                <el-form-item label="书目号">
-                  <span>{{ props.row.number }}</span>
+                <el-form-item label="序列号">
+                  <span>{{ props.row.collection.book.no }}</span>
                 </el-form-item>
-                <el-form-item label="书籍描述">
-                  <span>{{ props.row.description }}</span>
+                <el-form-item label="书籍描述" style="display: block">
+                  <span>{{ props.row.collection.book.summary }}</span>
                 </el-form-item>
               </el-form>
             </template>
           </el-table-column>
-          <el-table-column prop="name" label="书名" width="130"></el-table-column>
-          <el-table-column prop="author" label="作者" width="130"></el-table-column>
-          <el-table-column prop="style" label="类别" width="130"></el-table-column>
-          <el-table-column prop="wordCount" label="字数" width="120"></el-table-column>
-          <el-table-column prop="publisher" label="出版社" width="150"></el-table-column>
-          <el-table-column prop="storageLocation" label="馆藏地" width="150"></el-table-column>
-          <el-table-column prop="remainAmount" label="现存数量" width="150"></el-table-column>
+          <el-table-column prop="collection.book.name" label="书名" width="180"></el-table-column>
+          <el-table-column prop="collection.book.author" label="作者" width="140"></el-table-column>
+          <el-table-column prop="collection.book.category" label="类别" width="150"></el-table-column>
+          <el-table-column prop="collection.book.length" label="字数" width="150"></el-table-column>
+          <el-table-column prop="collection.book.publisher" label="出版社" width="160"></el-table-column>
+          <el-table-column prop="collection.book.located" label="馆藏地" width="180"></el-table-column>
           <el-table-column>
             <template slot="header" slot-scope="scope">
               <el-input prefix-icon="el-icon-search" v-model="search" style="width: 100px" size="medium" placeholder="输入关键字搜索" @input="searchTable"/>
@@ -49,188 +48,7 @@ export default {
   name: 'PaperShelves',
   data () {
     return {
-      tableData: [
-        {
-          star: true,
-          name: '活着',
-          author: '余华',
-          style: '小说',
-          wordCount: '12000',
-          publisher: '作家出版社',
-          storageLocation: '文学书库（3B）',
-          remainAmount: 2,
-          number: '01',
-          description: '《活着》是作家余华的代表作之一，讲述了在大时代背景下，随着内战、三反五反，大跃进，文化大革命等社会变革，徐福贵的人生和家庭不断经受着苦难，到了最后所有亲人都先后离他而去，仅剩下年老的他和一头老牛相依为命。'
-        },
-        {
-          star: true,
-          name: '活着',
-          author: '余华',
-          style: '小说',
-          wordCount: '12000',
-          publisher: '作家出版社',
-          storageLocation: '文学书库（3B）',
-          remainAmount: 2,
-          number: '01',
-          description: '《活着》是作家余华的代表作之一，讲述了在大时代背景下，随着内战、三反五反，大跃进，文化大革命等社会变革，徐福贵的人生和家庭不断经受着苦难，到了最后所有亲人都先后离他而去，仅剩下年老的他和一头老牛相依为命。'
-        },
-        {
-          star: true,
-          name: '活着',
-          author: '余华',
-          style: '小说',
-          wordCount: '12000',
-          publisher: '作家出版社',
-          storageLocation: '文学书库（3B）',
-          remainAmount: 2,
-          number: '01',
-          description: '《活着》是作家余华的代表作之一，讲述了在大时代背景下，随着内战、三反五反，大跃进，文化大革命等社会变革，徐福贵的人生和家庭不断经受着苦难，到了最后所有亲人都先后离他而去，仅剩下年老的他和一头老牛相依为命。'
-        },
-        {
-          star: true,
-          name: '活着',
-          author: '余华',
-          style: '小说',
-          wordCount: '12000',
-          publisher: '作家出版社',
-          storageLocation: '文学书库（3B）',
-          remainAmount: 2,
-          number: '01',
-          description: '《活着》是作家余华的代表作之一，讲述了在大时代背景下，随着内战、三反五反，大跃进，文化大革命等社会变革，徐福贵的人生和家庭不断经受着苦难，到了最后所有亲人都先后离他而去，仅剩下年老的他和一头老牛相依为命。'
-        },
-        {
-          star: false,
-          name: '活着',
-          author: '余华',
-          style: '小说',
-          wordCount: '12000',
-          publisher: '作家出版社',
-          storageLocation: '文学书库（3B）',
-          remainAmount: 2,
-          number: '01',
-          description: '《活着》是作家余华的代表作之一，讲述了在大时代背景下，随着内战、三反五反，大跃进，文化大革命等社会变革，徐福贵的人生和家庭不断经受着苦难，到了最后所有亲人都先后离他而去，仅剩下年老的他和一头老牛相依为命。'
-        },
-        {
-          star: false,
-          name: '活着',
-          author: '余华',
-          style: '小说',
-          wordCount: '12000',
-          publisher: '作家出版社',
-          storageLocation: '文学书库（3B）',
-          remainAmount: 2,
-          number: '01',
-          description: '《活着》是作家余华的代表作之一，讲述了在大时代背景下，随着内战、三反五反，大跃进，文化大革命等社会变革，徐福贵的人生和家庭不断经受着苦难，到了最后所有亲人都先后离他而去，仅剩下年老的他和一头老牛相依为命。'
-        },
-        {
-          star: false,
-          name: '活着',
-          author: '余华',
-          style: '小说',
-          wordCount: '12000',
-          publisher: '作家出版社',
-          storageLocation: '文学书库（3B）',
-          remainAmount: 2,
-          number: '01',
-          description: '《活着》是作家余华的代表作之一，讲述了在大时代背景下，随着内战、三反五反，大跃进，文化大革命等社会变革，徐福贵的人生和家庭不断经受着苦难，到了最后所有亲人都先后离他而去，仅剩下年老的他和一头老牛相依为命。'
-        },
-        {
-          star: false,
-          name: '活着',
-          author: '余华',
-          style: '小说',
-          wordCount: '12000',
-          publisher: '作家出版社',
-          storageLocation: '文学书库（3B）',
-          remainAmount: 2,
-          number: '01',
-          description: '《活着》是作家余华的代表作之一，讲述了在大时代背景下，随着内战、三反五反，大跃进，文化大革命等社会变革，徐福贵的人生和家庭不断经受着苦难，到了最后所有亲人都先后离他而去，仅剩下年老的他和一头老牛相依为命。'
-        },
-        {
-          star: false,
-          name: '活着',
-          author: '余华',
-          style: '小说',
-          wordCount: '12000',
-          publisher: '作家出版社',
-          storageLocation: '文学书库（3B）',
-          remainAmount: 2,
-          number: '01',
-          description: '《活着》是作家余华的代表作之一，讲述了在大时代背景下，随着内战、三反五反，大跃进，文化大革命等社会变革，徐福贵的人生和家庭不断经受着苦难，到了最后所有亲人都先后离他而去，仅剩下年老的他和一头老牛相依为命。'
-        },
-        {
-          star: false,
-          name: '活着',
-          author: '余华',
-          style: '小说',
-          wordCount: '12000',
-          publisher: '作家出版社',
-          storageLocation: '文学书库（3B）',
-          remainAmount: 2,
-          number: '01',
-          description: '《活着》是作家余华的代表作之一，讲述了在大时代背景下，随着内战、三反五反，大跃进，文化大革命等社会变革，徐福贵的人生和家庭不断经受着苦难，到了最后所有亲人都先后离他而去，仅剩下年老的他和一头老牛相依为命。'
-        },
-        {
-          star: false,
-          name: '活着',
-          author: '余华',
-          style: '小说',
-          wordCount: '12000',
-          publisher: '作家出版社',
-          storageLocation: '文学书库（3B）',
-          remainAmount: 2,
-          number: '01',
-          description: '《活着》是作家余华的代表作之一，讲述了在大时代背景下，随着内战、三反五反，大跃进，文化大革命等社会变革，徐福贵的人生和家庭不断经受着苦难，到了最后所有亲人都先后离他而去，仅剩下年老的他和一头老牛相依为命。'
-        },
-        {
-          star: false,
-          name: '活着',
-          author: '余华',
-          style: '小说',
-          wordCount: '12000',
-          publisher: '作家出版社',
-          storageLocation: '文学书库（3B）',
-          remainAmount: 2,
-          number: '01',
-          description: '《活着》是作家余华的代表作之一，讲述了在大时代背景下，随着内战、三反五反，大跃进，文化大革命等社会变革，徐福贵的人生和家庭不断经受着苦难，到了最后所有亲人都先后离他而去，仅剩下年老的他和一头老牛相依为命。'
-        },
-        {
-          star: false,
-          name: '活着',
-          author: '余华',
-          style: '小说',
-          wordCount: '12000',
-          publisher: '作家出版社',
-          storageLocation: '文学书库（3B）',
-          remainAmount: 2,
-          number: '01',
-          description: '《活着》是作家余华的代表作之一，讲述了在大时代背景下，随着内战、三反五反，大跃进，文化大革命等社会变革，徐福贵的人生和家庭不断经受着苦难，到了最后所有亲人都先后离他而去，仅剩下年老的他和一头老牛相依为命。'
-        },
-        {
-          star: false,
-          name: '活着',
-          author: '余华',
-          style: '小说',
-          wordCount: '12000',
-          publisher: '作家出版社',
-          storageLocation: '文学书库（3B）',
-          remainAmount: 2,
-          number: '01',
-          description: '《活着》是作家余华的代表作之一，讲述了在大时代背景下，随着内战、三反五反，大跃进，文化大革命等社会变革，徐福贵的人生和家庭不断经受着苦难，到了最后所有亲人都先后离他而去，仅剩下年老的他和一头老牛相依为命。'
-        },
-        {
-          star: false,
-          name: '活着',
-          author: '余华',
-          style: '小说',
-          wordCount: '12000',
-          publisher: '作家出版社',
-          storageLocation: '文学书库（3B）',
-          remainAmount: 2,
-          number: '01',
-          description: '《活着》是作家余华的代表作之一，讲述了在大时代背景下，随着内战、三反五反，大跃进，文化大革命等社会变革，徐福贵的人生和家庭不断经受着苦难，到了最后所有亲人都先后离他而去，仅剩下年老的他和一头老牛相依为命。'
-        }
-      ],
+      table: [],
       // 加载开关
       loading: false,
       // 不断更新的表单
@@ -239,8 +57,6 @@ export default {
       oldTableData: [],
       // 搜索框内容
       search: '',
-      // 数据总数
-      // dataSum: 10,
       // 每页条数
       pageSize: 9,
       // 当前页数
@@ -251,8 +67,14 @@ export default {
     // 处理点击
     clickStar (index, rows) {
       let newIndex = (this.currentPage - 1) * this.pageSize + index
-      console.log(newIndex)
+      // console.log(newIndex)
       if (!rows[newIndex].star) {
+        this.$axios.get('http://112.74.32.189:8080/library/saveCollect', {
+          params: {
+            account: '5',
+            bookID: rows[newIndex].collection.book.no
+          }
+        })
         this.$message({
           duration: 1000,
           message: '收藏成功！',
@@ -260,6 +82,12 @@ export default {
         })
         rows[newIndex].star = true
       } else {
+        this.$axios.get('http://112.74.32.189:8080/library/deleteCollect', {
+          params: {
+            account: '5',
+            bookID: rows[newIndex].collection.book.no
+          }
+        })
         this.$message({
           duration: 1000,
           message: '取消收藏！'
@@ -286,9 +114,9 @@ export default {
       let newList = []
       if (this.search !== '') {
         this.oldTableData.forEach(item => {
-          if (item.name.toLowerCase().indexOf(this.search.toLowerCase()) !== -1 ||
-            item.author.toLowerCase().indexOf(this.search.toLowerCase()) !== -1 ||
-            item.style.toLowerCase().indexOf(this.search.toLowerCase()) !== -1) {
+          if (item.collection.book.name.toLowerCase().indexOf(this.search.toLowerCase()) !== -1 ||
+            item.collection.book.author.toLowerCase().indexOf(this.search.toLowerCase()) !== -1 ||
+            item.collection.book.category.toLowerCase().indexOf(this.search.toLowerCase()) !== -1) {
             newList.push(item)
           }
         })
@@ -296,16 +124,24 @@ export default {
       } else {
         this.uploadData = this.oldTableData
       }
-    },
-    // 获取表单数据
-    getTableData () {
-      this.oldTableData = this.tableData
-      this.uploadData = this.tableData
     }
   },
   // 加载组件时更新表单
   mounted () {
-    this.getTableData()
+    this.$axios.get('http://112.74.32.189:8080/library/getCollections', {
+      params: {
+        account: '5'
+      }
+    }).then((response) => {
+      // console.log(response.data.data)
+      let data = response.data.data
+      data.forEach((item) => {
+        item['star'] = true
+      })
+      console.log(data)
+      this.oldTableData = data
+      this.uploadData = data
+    })
   }
 }
 </script>

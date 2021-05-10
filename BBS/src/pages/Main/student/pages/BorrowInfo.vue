@@ -10,7 +10,7 @@
                 <el-form-item label="序列号">
                   <span>{{ props.row.book.no }}</span>
                 </el-form-item>
-                <el-form-item label="书籍描述">
+                <el-form-item label="书籍描述" style="display: block">
                   <span>{{ props.row.book.summary }}</span>
                 </el-form-item>
               </el-form>
@@ -138,7 +138,7 @@ export default {
     this.$axios.post('http://112.74.32.189:8080/library/borrowRecord', {
       account: '5'
     }).then((response) => {
-      // console.log(response.data.data)
+      console.log(response.data.data)
       this.oldTableData = response.data.data
       this.uploadData = response.data.data
     })

@@ -19,7 +19,7 @@
                 <el-form-item label="序列号">
                   <span>{{ props.row.number }}</span>
                 </el-form-item>
-                <el-form-item label="书籍描述">
+                <el-form-item label="书籍描述" style="display: block">
                   <span>{{ props.row.description }}</span>
                 </el-form-item>
               </el-form>

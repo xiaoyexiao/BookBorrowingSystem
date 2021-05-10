@@ -5,17 +5,17 @@
         <el-table style="width: 100%" :data="uploadData.slice((currentPage-1)*pageSize,currentPage*pageSize)"
                   v-loading="loading" :default-sort = "{prop: 'borrowDate', order: 'descending'}"  height="484">
           <el-table-column width="40"></el-table-column>
-          <el-table-column prop="bookName" label="书名" width="160"></el-table-column>
-          <el-table-column prop="bookNumber" label="序列号" width="140"></el-table-column>
-          <el-table-column prop="studentName" label="借阅人" width="120"></el-table-column>
-          <el-table-column prop="studentNumber" label="学号" width="180"></el-table-column>
+          <el-table-column prop="book.name" label="书名" width="160"></el-table-column>
+          <el-table-column prop="book.no" label="序列号" width="140"></el-table-column>
+          <el-table-column prop="book.studentName" label="借阅人" width="120"></el-table-column>
+          <el-table-column prop="studentNo" label="学号" width="180"></el-table-column>
           <el-table-column prop="borrowDate" label="借阅时间" width="180" sortable>
             <template slot-scope="scope">
               <i class="el-icon-time"></i>
               <span style="margin-left: 10px">{{ scope.row.borrowDate }}</span>
             </template>
           </el-table-column>
-          <el-table-column prop="status" label="状态" width="180" sortable></el-table-column>
+          <el-table-column prop="status" label="状态" width="180" sortable :formatter="state"></el-table-column>
           <el-table-column>
             <template slot="header" slot-scope="scope">
               <el-input prefix-icon="el-icon-search" v-model="search" size="mini" placeholder="输入关键字搜索" @input="searchTable"/>
@@ -127,6 +127,10 @@ export default {
     }
   },
   methods: {
+    // 处理状态的文本格式
+    state (row, column) {
+      return row.status === false ? `借阅中-剩余时间/天:${row.resting}` : '已归还'
+    },
     handleCurrentChange (val) {
       this.currentPage = val
       this.loading = true
@@ -182,10 +186,10 @@ export default {
   mounted () {
     this.$axios.get('http://112.74.32.189:8080/library/getAllRecord', {params: {}})
       .then((response) => {
-        console.log(response.data.data)
+        // console.log(response.data.data)
+        this.oldTableData = response.data.data
+        this.uploadData = response.data.data
       })
-    this.oldTableData = this.tableData
-    this.uploadData = this.tableData
   }
 }
 </script>
