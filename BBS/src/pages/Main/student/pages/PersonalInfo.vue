@@ -65,52 +65,6 @@ export default {
       personData: [],
       table: [],
       totalData: [],
-      // tableData: [
-      //   {
-      //     name: '活着1',
-      //     author: '余华',
-      //     style: '小说',
-      //     wordCount: 120000,
-      //     publisher: '作家出版社',
-      //     remainTime: 7
-      //   },
-      //   {
-      //     name: '活着1',
-      //     author: '余华',
-      //     style: '小说',
-      //     wordCount: 120000,
-      //     publisher: '作家出版社',
-      //     remainTime: 4
-      //   }, {
-      //     name: '活着1',
-      //     author: '余华',
-      //     style: '小说',
-      //     wordCount: 120000,
-      //     publisher: '作家出版社',
-      //     remainTime: 12
-      //   }, {
-      //     name: '活着1',
-      //     author: '余华',
-      //     style: '小说',
-      //     wordCount: 120000,
-      //     publisher: '作家出版社',
-      //     remainTime: 2
-      //   }, {
-      //     name: '活着1',
-      //     author: '余华',
-      //     style: '小说',
-      //     wordCount: 120000,
-      //     publisher: '作家出版社',
-      //     remainTime: 5
-      //   }, {
-      //     name: '活着1',
-      //     author: '余华',
-      //     style: '小说',
-      //     wordCount: 120000,
-      //     publisher: '作家出版社',
-      //     remainTime: 1
-      //   }
-      // ],
       // 不断更新的表单
       uploadData: [],
       // 初始表单
@@ -132,18 +86,26 @@ export default {
         confirmButtonText: '确定',
         type: 'warning'
       }).then((action) => {
-        this.$message({
-          type: 'success',
-          message: '续租成功!'
-        })
-        if (action === 'confirm') {
-          for (let i = 0; i < table.length; i++) {
-            if (table[i] === row) {
-              table[i].resting += 30
-              break
-            }
+        this.$axios.get('http://112.74.32.189:8080/library/reletBook', {
+          params: {
+            order: row.order
           }
-        }
+        }).then((response) => {
+          if (response.data.event === 0) {
+            for (let i = 0; i < table.length; i++) {
+              if (table[i] === row) {
+                table[i].resting += 30
+                break
+              }
+            }
+            this.$message({
+              type: 'success',
+              message: '续租成功!'
+            })
+          } else {
+            this.$message.error('续租失败,仅允许续租一次！')
+          }
+        })
       })
     }
   },
@@ -153,7 +115,7 @@ export default {
     this.$axios.post('http://112.74.32.189:8080/library/getStudent', {
       account: this.$store.state.id
     }).then((response) => {
-      console.log(response.data.data)
+      // console.log(response.data.data)
       this.personData = response.data.data
     })
     this.$axios.get('http://112.74.32.189:8080/library/borrowingBook', {
@@ -161,7 +123,7 @@ export default {
         account: '5'
       }
     }).then((response) => {
-      console.log(response.data.data)
+      // console.log(response.data.data)
       this.table = response.data.data
     })
     this.$axios.get('http://112.74.32.189:8080/library/recordNumber', {

@@ -14,7 +14,7 @@
           <el-card class="card" :class="[{'disabled':this.index+0>=this.sum}]"
                    :body-style="{ padding: '0px',height:'260px'}">
             <a href="#"  @click="toBook(0)" :title="(this.index+0>=this.sum)?false:this.electronicBookData[this.index+0].name">
-              <img :src="(this.index+0>=this.sum)?false:this.electronicBookData[this.index+0].src" class="image">
+              <img :src="(this.index+0>=this.sum)?false:this.electronicBookData[this.index+0].src" class="image" alt="">
             </a>
             <div class="span">
               <div class="name">{{ (this.index+0>=this.sum)?false:this.electronicBookData[this.index+0].name }}</div>
@@ -123,6 +123,7 @@ export default {
       // 当前页的第一个索引值
       index: 0,
       currentPage: 1,
+      bookConfig: [],
       electronicBookData: [
         {
           src: require('../../../../assets/images/bookImg/1.jpg'),
@@ -210,7 +211,13 @@ export default {
     }
   },
   mounted () {
-    this.sum = this.electronicBookData.length
+    this.$axios.get('http://112.74.32.189:8080/library/getAllEbook', {
+      params: {}
+    }).then((response) => {
+      // console.log(response.data.data)
+      this.bookConfig = response.data.data
+      this.sum = this.electronicBookData.length
+    })
   }
 }
 </script>

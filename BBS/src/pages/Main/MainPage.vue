@@ -68,11 +68,7 @@ export default {
           {
             type: 'pie',
             radius: '60%',
-            data: [
-              {value: 1048, name: '小说'},
-              {value: 735, name: '自然'},
-              {value: 580, name: '社科类'}
-            ],
+            data: [],
             emphasis: { // 触碰数据时的显示
               itemStyle: {
                 shadowBlur: 10,
@@ -96,8 +92,20 @@ export default {
     }
   },
   mounted () {
-    this.myChart = this.$echarts.init(document.getElementById('pieChart'))
-    this.myChart.setOption(this.option)
+    this.$axios.get('http://112.74.32.189:8080/library/countCategories', {params: {}})
+      .then((response) => {
+        // console.log(response.data.data)
+        for (let key in response.data.data) { // 遍历键值对
+          let obj = {
+            value: response.data.data[key],
+            name: key
+          }
+          this.option.series[0].data.push(obj)
+        }
+        // console.log(this.option.series[0].data)
+        this.myChart = this.$echarts.init(document.getElementById('pieChart'))
+        this.myChart.setOption(this.option)
+      })
     setTimeout(() => {
       this.display = true
     }, 800)
