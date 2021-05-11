@@ -71,7 +71,7 @@ export default {
       if (!rows[newIndex].star) {
         this.$axios.get('http://112.74.32.189:8080/library/saveCollect', {
           params: {
-            account: '5',
+            account: this.$store.state.id,
             bookID: rows[newIndex].collection.book.no
           }
         })
@@ -84,7 +84,7 @@ export default {
       } else {
         this.$axios.get('http://112.74.32.189:8080/library/deleteCollect', {
           params: {
-            account: '5',
+            account: this.$store.state.id,
             bookID: rows[newIndex].collection.book.no
           }
         })
@@ -130,7 +130,7 @@ export default {
   mounted () {
     this.$axios.get('http://112.74.32.189:8080/library/getCollections', {
       params: {
-        account: '5'
+        account: this.$store.state.id
       }
     }).then((response) => {
       // console.log(response.data.data)

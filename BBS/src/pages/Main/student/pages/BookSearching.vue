@@ -27,7 +27,7 @@
           </el-table-column>
           <el-table-column prop="book.name" label="书名" width="130"></el-table-column>
           <el-table-column prop="book.author" label="作者" width="130"></el-table-column>
-          <el-table-column prop="book.summary" label="类别" width="130" :filters="sectorStyle" :filter-method="filterStyle"></el-table-column>
+          <el-table-column prop="book.category" label="类别" width="130" :filters="sectorStyle" :filter-method="filterStyle"></el-table-column>
           <el-table-column prop="book.length" label="字数" width="120"></el-table-column>
           <el-table-column prop="book.publisher" label="出版社" width="150"></el-table-column>
           <el-table-column prop="book.located" label="馆藏地" width="150"></el-table-column>
@@ -56,16 +56,7 @@ export default {
     return {
       // 开关
       value: false,
-      sectorStyle: [
-        {
-          'text': '小说',
-          'value': '小说'
-        },
-        {
-          'text': '传记',
-          'value': '传记'
-        }
-      ],
+      sectorStyle: [],
       // 不断更新的表单
       uploadData: [],
       // 初始表单
@@ -78,8 +69,6 @@ export default {
       loading: false,
       searchName: '',
       searchStyle: '',
-      // 数据总数
-      // dataSum: 10,
       // 每页条数
       pageSize: 9,
       // 当前页数
@@ -112,12 +101,12 @@ export default {
       if (this.search !== '') {
         // 搜索框有内容
         this.oldTableData.forEach(item => {
-          if ((item.name.toLowerCase().indexOf(this.search.toLowerCase()) !== -1 ||
-            item.author.toLowerCase().indexOf(this.search.toLowerCase()) !== -1 ||
-            item.style.toLowerCase().indexOf(this.search.toLowerCase()) !== -1) &&
-            (!this.value || item.status === '可借') &&
+          if ((item.book.name.toLowerCase().indexOf(this.search.toLowerCase()) !== -1 ||
+            item.book.author.toLowerCase().indexOf(this.search.toLowerCase()) !== -1 ||
+            item.book.category.toLowerCase().indexOf(this.search.toLowerCase()) !== -1) &&
+            (!this.value || item.status === true) &&
             // 没有书类别筛选或者满足筛选条件
-            (this.styles.length === 0 || this.contains(this.styles, item.style))) {
+            (this.styles.length === 0 || this.contains(this.styles, item.book.category))) {
             newList.push(item)
           }
         })
@@ -127,15 +116,15 @@ export default {
         if (this.value) {
           // 开关打开了，过滤被借出的书
           this.oldTableData.forEach(item => {
-            if (item.status === '可借' &&
-              (this.styles.length === 0 || this.contains(this.styles, item.style))) {
+            if (item.status === true &&
+              (this.styles.length === 0 || this.contains(this.styles, item.book.category))) {
               newList.push(item)
             }
           })
           return newList
         } else {
           this.oldTableData.forEach(item => {
-            if (this.styles.length === 0 || this.contains(this.styles, item.style)) {
+            if (this.styles.length === 0 || this.contains(this.styles, item.book.category)) {
               newList.push(item)
             }
           })
@@ -157,20 +146,32 @@ export default {
     },
     // 根据类别过滤
     filterStyle (value, row) {
-      return row.style === value
+      return row.book.category === value
     },
     // 处理收藏按钮的点击
     clickStar (index, rows) {
       let newIndex = (this.currentPage - 1) * this.pageSize + index
       // console.log(newIndex)
       if (!rows[newIndex].star) {
+        this.$axios.get('http://112.74.32.189:8080/library/saveCollect', {
+          params: {
+            account: this.$store.state.id,
+            bookID: rows[newIndex].book.no
+          }
+        })
         this.$message({
           duration: 1000,
-          message: '收藏成功！已添加到"收藏书单"',
+          message: '收藏成功！',
           type: 'success'
         })
         rows[newIndex].star = true
       } else {
+        this.$axios.get('http://112.74.32.189:8080/library/deleteCollect', {
+          params: {
+            account: this.$store.state.id,
+            bookID: rows[newIndex].book.no
+          }
+        })
         this.$message({
           duration: 1000,
           message: '取消收藏！'
@@ -197,15 +198,39 @@ export default {
   },
   // 加载组件时更新表单
   mounted () {
+    this.$axios.get('http://112.74.32.189:8080/library/countCategories', {
+      params: {}
+    }).then((response) => {
+      console.log(response.data.data)
+      for (let key in response.data.data) { // 遍历键值对
+        let obj={
+          text: key,
+          value: key
+        }
+        this.sectorStyle.push(obj)
+      }
+    })
     this.$axios.get('http://112.74.32.189:8080/library/books', {params: {}})
-      .then((response) => {
-        let data = response.data.data
-        data.forEach((item) => {
-          item['star'] = false
-        })
-        // console.log(data)
-        this.oldTableData = data
-        this.uploadData = data
+      .then((res1) => {
+        this.$axios.get('http://112.74.32.189:8080/library/getCollections', {params: {
+          account: this.$store.state.id
+        }})
+          .then((res2) => {
+            let starArray=[]
+            res2.data.data.forEach((val)=>{
+              starArray.push(val.collection.book.no)
+            })
+            let data = res1.data.data
+            data.forEach((item) => {
+              if(starArray.indexOf(item.book.no)>-1){
+                item['star'] = true
+              }else{
+                item['star'] = false
+              }
+            })
+            this.oldTableData = data
+            this.uploadData = data
+          })
       })
   }
 }
