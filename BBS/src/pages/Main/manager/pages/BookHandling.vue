@@ -16,9 +16,13 @@
             </el-form-item>
             <el-form-item label="类别：" prop="style" style="display: inline-block;width: 286px">
               <el-select v-model="bookInfoForm.style">
-                <el-option label="文学" value="wenXue"></el-option>
-                <el-option label="言情" value="yanQing"></el-option>
-                <el-option label="玄幻" value="xu"></el-option>
+                <el-option label="学术" value="学术"></el-option>
+                <el-option label="诗歌" value="诗歌"></el-option>
+                <el-option label="日本文学" value="日本文学"></el-option>
+                <el-option label="随笔" value="随笔"></el-option>
+                <el-option label="散文" value="散文"></el-option>
+                <el-option label="科学" value="科学"></el-option>
+                <el-option label="小说" value="小说"></el-option>
               </el-select>
             </el-form-item>
             <el-form-item label="字数：" prop="wordCount" style="display: inline-block;margin-left: 40px">
@@ -51,17 +55,17 @@
       </div>
       <div class="table">
         <el-table style="width: 100%" :data="uploadData.slice((currentPage-1)*pageSize,currentPage*pageSize)"
-                  height="480" v-loading="loading">
+                  height="492" v-loading="loading">
           <el-table-column width="60"></el-table-column>
-          <el-table-column prop="number" label="序列号" width="120"></el-table-column>
-          <el-table-column prop="name" label="书名" width="130"></el-table-column>
-          <el-table-column prop="author" label="作者" width="130"></el-table-column>
-          <el-table-column prop="style" label="类别" width="130"></el-table-column>
-          <el-table-column prop="publisher" label="出版社" width="180"></el-table-column>
-          <el-table-column prop="status" label="书刊状态" width="240"></el-table-column>
+          <el-table-column prop="book.no" label="序列号" width="120"></el-table-column>
+          <el-table-column prop="book.name" label="书名" width="160"></el-table-column>
+          <el-table-column prop="book.author" label="作者" width="220"></el-table-column>
+          <el-table-column prop="book.category" label="类别" width="130"></el-table-column>
+          <el-table-column prop="book.publisher" label="出版社" width="180"></el-table-column>
+          <el-table-column prop="status" label="状态" width="220" sortable :formatter="state"></el-table-column>
           <el-table-column>
             <template slot-scope="scope">
-              <el-button class="el-icon-circle-close" size="mini" type="danger" :disabled="scope.row.status!=='已归还'"
+              <el-button class="el-icon-circle-close" size="mini" type="danger" :disabled="scope.row.status!==true"
                          @click="deleteBook(scope.row)">下架
               </el-button>
             </template>
@@ -93,46 +97,20 @@ export default {
         location: [],
         options: [
           {
-            value: 'social',
-            label: '中文社科书库',
-            children: [
-              {
-                value: '1A',
-                label: '一层A库'
-              },
-              {
-                value: '1B',
-                label: '一层B库'
-              }
-            ]
+            value: '总馆',
+            label: '总馆'
           },
           {
-            value: 'nature',
-            label: '中文自然书库',
-            children: [
-              {
-                value: '2A',
-                label: '二层A库'
-              },
-              {
-                value: '2B',
-                label: '二层B库'
-              }
-            ]
+            value: '泰山',
+            label: '泰山'
           },
           {
-            value: 'literature',
-            label: '文学/外文书库',
-            children: [
-              {
-                value: '3A',
-                label: '三层A库'
-              },
-              {
-                value: '3B',
-                label: '三层B库'
-              }
-            ]
+            value: '启林',
+            label: '启林'
+          },
+          {
+            value: '华山',
+            label: '华山'
           }
         ]
       },
@@ -140,80 +118,6 @@ export default {
       addBookDialogVisible: false,
       // 开关
       buttonValue: false,
-      tableData: [
-        {
-          name: '活着1',
-          author: '余华',
-          style: '小说',
-          publisher: '作家出版社',
-          number: '01',
-          status: '已归还'
-        },
-        {
-          name: '活着2',
-          author: '余华',
-          style: '小说',
-          publisher: '作家出版社',
-          number: '01',
-          status: '已归还'
-        }, {
-          name: '活着1',
-          author: '余华',
-          style: '小说',
-          publisher: '作家出版社',
-          number: '01',
-          status: '已归还'
-        }, {
-          name: '活着1',
-          author: '余华',
-          style: '小说',
-          publisher: '作家出版社',
-          number: '01',
-          status: '已归还'
-        }, {
-          name: '活着1',
-          author: '余华',
-          style: '小说',
-          publisher: '作家出版社',
-          number: '01',
-          status: '已归还'
-        }, {
-          name: '活着1',
-          author: '余华',
-          style: '小说',
-          publisher: '作家出版社',
-          number: '01',
-          status: '借阅中-剩余时间/天：30'
-        }, {
-          name: '活着1',
-          author: '余华',
-          style: '小说',
-          publisher: '作家出版社',
-          number: '01',
-          status: '借阅中-剩余时间/天：30'
-        }, {
-          name: '活着1',
-          author: '余华',
-          style: '小说',
-          publisher: '作家出版社',
-          number: '01',
-          status: '借阅中-剩余时间/天：30'
-        }, {
-          name: '活着1',
-          author: '余华',
-          style: '小说',
-          publisher: '作家出版社',
-          number: '01',
-          status: '已归还'
-        }, {
-          name: '活着1',
-          author: '余华',
-          style: '小说',
-          publisher: '作家出版社',
-          number: '01',
-          status: '已归还'
-        }
-      ],
       // 不断更新的表单
       uploadData: [],
       // 初始表单
@@ -233,15 +137,47 @@ export default {
     }
   },
   methods: {
+    // 处理状态的文本格式
+    state (row, column) {
+      return row.status === false ? `借阅中-归还日期:${row.deadline}` : '已归还'
+    },
     // 上传表单的提交按钮
     onSubmit (formName) {
-      console.log(this.bookInfoForm.location)
+      let obj = {
+        book: {
+          name: this.bookInfoForm.name,
+          author: this.bookInfoForm.author,
+          summary: this.bookInfoForm.desc,
+          publisher: this.bookInfoForm.publisher,
+          located: this.bookInfoForm.location,
+          category: this.bookInfoForm.style,
+          length: this.bookInfoForm.wordCount,
+          no: Math.round(Math.random() * 10000)
+        },
+        status: true
+      }
+      this.oldTableData.push(obj)
+      this.$axios.post('http://112.74.32.189:8080/library/saveBook', {
+        name: this.bookInfoForm.name,
+        author: this.bookInfoForm.author,
+        summary: this.bookInfoForm.desc,
+        publisher: this.bookInfoForm.publisher,
+        located: this.bookInfoForm.location,
+        category: this.bookInfoForm.style,
+        length: this.bookInfoForm.wordCount
+      }).then((response) => {
+        console.log(this.bookInfoForm.wordCount)
+        // this.uploadData.push()
+      })
+      // console.log(this.bookInfoForm.location)
       this.$message({
         type: 'success',
         message: '上架成功!'
       })
       this.$refs[formName].resetFields()
       this.addBookDialogVisible = false
+      this.search = ''
+      this.updatedTable()
     },
     // 上架表单的重置按钮
     resetForm (formName) {
@@ -262,6 +198,13 @@ export default {
           message: '下架成功!'
         })
         if (action === 'confirm') {
+          this.$axios.get('http://112.74.32.189:8080/library/deleteBook', {
+            params: {
+              bookID: row.book.no
+            }
+          }).then((response) => {
+            console.log(response.data.data)
+          })
           for (let i = 0; i < this.oldTableData.length; i++) {
             if (this.oldTableData[i] === row) {
               this.oldTableData.splice(i, 1)
@@ -275,7 +218,7 @@ export default {
             }
           }
         }
-      })
+      }).catch(() => {})
     },
     // 根据关键字、开关和书的类别从table更新数据！
     updatedTable () {
@@ -288,10 +231,10 @@ export default {
       if (this.search !== '') {
         // 搜索框有内容
         this.oldTableData.forEach(item => {
-          if ((item.name.toLowerCase().indexOf(this.search.toLowerCase()) !== -1 ||
-            item.author.toLowerCase().indexOf(this.search.toLowerCase()) !== -1 ||
-            item.style.toLowerCase().indexOf(this.search.toLowerCase()) !== -1) &&
-            (!this.buttonValue || item.status === '已归还')) {
+          if ((item.book.name.toLowerCase().indexOf(this.search.toLowerCase()) !== -1 ||
+            item.book.author.toLowerCase().indexOf(this.search.toLowerCase()) !== -1 ||
+            item.book.category.toLowerCase().indexOf(this.search.toLowerCase()) !== -1) &&
+            (!this.buttonValue || item.status === true)) {
             newList.push(item)
           }
         })
@@ -301,7 +244,7 @@ export default {
         if (this.buttonValue) {
           // 开关打开了，过滤被借出的书
           this.oldTableData.forEach(item => {
-            if (item.status === '已归还') {
+            if (item.status === true) {
               newList.push(item)
             }
           })
@@ -326,16 +269,16 @@ export default {
       setTimeout(() => {
         this.loading = false
       }, 300)
-    },
-    // 获取表单数据
-    getTableData () {
-      this.oldTableData = this.tableData
-      this.uploadData = this.tableData
     }
   },
   // 加载组件时更新表单
   mounted () {
-    this.getTableData()
+    this.$axios.get('http://112.74.32.189:8080/library/books', {params: {}})
+      .then((response) => {
+        console.log(response.data.data)
+        this.oldTableData = response.data.data
+        this.uploadData = response.data.data
+      })
   }
 }
 </script>
@@ -346,7 +289,7 @@ export default {
   border-radius: 10px;
   padding-left: 10px;
   width: 1300px;
-  height: 620px;
+  height: 640px;
   background-color: #FFFFFF;
 }
 

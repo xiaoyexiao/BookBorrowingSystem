@@ -5,14 +5,18 @@
         <el-table style="width: 100%" :data="uploadData.slice((currentPage-1)*pageSize,currentPage*pageSize)"
                   v-loading="loading" :default-sort = "{prop: 'borrowSum', order: 'descending'}" height="484">
           <el-table-column width="20"></el-table-column>
-          <el-table-column prop="name" label="姓名" width="90"></el-table-column>
-          <el-table-column prop="number" label="学号" width="140"></el-table-column>
-          <el-table-column prop="grade" label="年级" width="110"></el-table-column>
-          <el-table-column prop="majorClass" label="专业班级" width="130"></el-table-column>
-          <el-table-column prop="email" label="电子邮箱" width="190"></el-table-column>
-          <el-table-column prop="phone" label="手机号" width="150"></el-table-column>
-          <el-table-column prop="borrowSum" label="借阅总数" width="110" sortable></el-table-column>
-          <el-table-column prop="returnedSum" label="待还总数" width="120" sortable></el-table-column>
+          <el-table-column prop="student.name" label="姓名" width="90"></el-table-column>
+          <el-table-column prop="student.number" label="学号" width="140"></el-table-column>
+          <el-table-column prop="student.grade" label="年级" width="110"></el-table-column>
+          <el-table-column prop="" label="专业班级" width="160">
+            <template slot-scope="scope">
+              {{scope.row.student.major}}{{scope.row.student.clazz}}班
+            </template>
+          </el-table-column>
+          <el-table-column prop="student.email" label="电子邮箱" width="190"></el-table-column>
+          <el-table-column prop="student.phone" label="手机号" width="150"></el-table-column>
+          <el-table-column prop="total" label="借阅总数" width="110" sortable></el-table-column>
+          <el-table-column prop="borrowingNumber" label="待还总数" width="120" sortable></el-table-column>
           <el-table-column>
             <template slot="header" slot-scope="scope">
               <el-input prefix-icon="el-icon-search" v-model="search" size="mini" placeholder="输入关键字搜索" @input="searchTable"/>
@@ -159,11 +163,12 @@ export default {
       let newList = []
       if (this.search !== '') {
         this.oldTableData.forEach(item => {
-          if (item.name.toLowerCase().indexOf(this.search.toLowerCase()) !== -1 ||
+          if (item.student.name.toLowerCase().indexOf(this.search.toLowerCase()) !== -1 ||
             // 数字别忘了先转为字符串！！！
-            item.number.toString().toLowerCase().indexOf(this.search.toString().toLowerCase()) !== -1 ||
-            item.grade.toLowerCase().indexOf(this.search.toLowerCase()) !== -1 ||
-            item.majorClass.toLowerCase().indexOf(this.search.toLowerCase()) !== -1) {
+            item.student.number.toString().toLowerCase().indexOf(this.search.toString().toLowerCase()) !== -1 ||
+            item.student.grade.toString().toLowerCase().indexOf(this.search.toLowerCase()) !== -1 ||
+            item.student.major.toLowerCase().indexOf(this.search.toLowerCase()) !== -1 ||
+            item.student.clazz.toString().toLowerCase().indexOf(this.search.toLowerCase()) !== -1) {
             newList.push(item)
           }
         })
@@ -171,16 +176,16 @@ export default {
       } else {
         this.uploadData = this.oldTableData
       }
-    },
-    // 获取表单数据
-    getTableData () {
-      this.oldTableData = this.tableData
-      this.uploadData = this.tableData
     }
   },
   // 加载组件时更新表单
   mounted () {
-    this.getTableData()
+    this.$axios.get('http://112.74.32.189:8080/library/getAllStudent', {params: {}})
+      .then((response) => {
+        console.log(response.data.data)
+        this.oldTableData = response.data.data
+        this.uploadData = response.data.data
+      })
   }
 }
 </script>
@@ -190,7 +195,7 @@ export default {
   border-radius: 10px;
   margin: 0 15px;
   width: 1300px;
-  height: 620px;
+  height: 640px;
   background-color: #FFFFFF;
 }
 .table{
@@ -199,6 +204,6 @@ export default {
   width: 1220px;
 }
 .pagination{
-  margin-top: 40px;
+  margin-top: 60px;
 }
 </style>

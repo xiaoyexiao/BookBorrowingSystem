@@ -25,13 +25,13 @@
               </el-form>
             </template>
           </el-table-column>
-          <el-table-column prop="book.name" label="书名" width="130"></el-table-column>
-          <el-table-column prop="book.author" label="作者" width="130"></el-table-column>
-          <el-table-column prop="book.category" label="类别" width="130" :filters="sectorStyle" :filter-method="filterStyle"></el-table-column>
-          <el-table-column prop="book.length" label="字数" width="120"></el-table-column>
-          <el-table-column prop="book.publisher" label="出版社" width="150"></el-table-column>
-          <el-table-column prop="book.located" label="馆藏地" width="150"></el-table-column>
-          <el-table-column prop="" label="书刊状态" width="220" :formatter="state"></el-table-column>
+          <el-table-column prop="book.name" label="书名" width="180"></el-table-column>
+          <el-table-column prop="book.author" label="作者" width="220"></el-table-column>
+          <el-table-column prop="book.category" label="类别" width="80" :filters="sectorStyle" :filter-method="filterStyle"></el-table-column>
+          <el-table-column prop="book.length" label="字数" width="80"></el-table-column>
+          <el-table-column prop="book.publisher" label="出版社" width="180"></el-table-column>
+          <el-table-column prop="book.located" label="馆藏地" width="80"></el-table-column>
+          <el-table-column prop="" label="书刊状态" width="210" :formatter="state"></el-table-column>
           <el-table-column>
             <template slot-scope="scope">
               <el-button icon="el-icon-star-off" circle class="star"
@@ -201,9 +201,9 @@ export default {
     this.$axios.get('http://112.74.32.189:8080/library/countCategories', {
       params: {}
     }).then((response) => {
-      console.log(response.data.data)
+      // console.log(response.data.data)
       for (let key in response.data.data) { // 遍历键值对
-        let obj={
+        let obj = {
           text: key,
           value: key
         }
@@ -216,15 +216,16 @@ export default {
           account: this.$store.state.id
         }})
           .then((res2) => {
-            let starArray=[]
-            res2.data.data.forEach((val)=>{
+            // console.log(res2)
+            let starArray = []
+            res2.data.data.forEach((val) => {
               starArray.push(val.collection.book.no)
             })
             let data = res1.data.data
             data.forEach((item) => {
-              if(starArray.indexOf(item.book.no)>-1){
+              if (starArray.indexOf(item.book.no) > -1) {
                 item['star'] = true
-              }else{
+              } else {
                 item['star'] = false
               }
             })

@@ -120,7 +120,7 @@ export default {
     })
     this.$axios.get('http://112.74.32.189:8080/library/borrowingBook', {
       params: {
-        account: '5'
+        account: this.$store.state.id
       }
     }).then((response) => {
       // console.log(response.data.data)
@@ -128,7 +128,7 @@ export default {
     })
     this.$axios.get('http://112.74.32.189:8080/library/recordNumber', {
       params: {
-        account: '5'
+        account: this.$store.state.id
       }
     }).then((response) => {
       // console.log(response.data.data)

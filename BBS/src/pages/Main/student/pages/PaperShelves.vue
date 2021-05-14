@@ -18,10 +18,10 @@
             </template>
           </el-table-column>
           <el-table-column prop="collection.book.name" label="书名" width="180"></el-table-column>
-          <el-table-column prop="collection.book.author" label="作者" width="140"></el-table-column>
+          <el-table-column prop="collection.book.author" label="作者" width="220"></el-table-column>
           <el-table-column prop="collection.book.category" label="类别" width="150"></el-table-column>
           <el-table-column prop="collection.book.length" label="字数" width="150"></el-table-column>
-          <el-table-column prop="collection.book.publisher" label="出版社" width="160"></el-table-column>
+          <el-table-column prop="collection.book.publisher" label="出版社" width="180"></el-table-column>
           <el-table-column prop="collection.book.located" label="馆藏地" width="180"></el-table-column>
           <el-table-column>
             <template slot="header" slot-scope="scope">

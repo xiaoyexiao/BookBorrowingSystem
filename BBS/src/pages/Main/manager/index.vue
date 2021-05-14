@@ -76,7 +76,7 @@ div,body,html{
   left:200px;
   height: 40px;
   width: 1336px;
-  line-height: 50px;
+  line-height: 40px;
   font-weight: bolder;
   padding-left: 25px;
   background-color: #E4E7ED;
@@ -85,8 +85,6 @@ div,body,html{
   position: fixed;
   left: 200px;
   top: 80px;
-  height: 800px;
-  width: 1336px;
   background-color: #E4E7ED;
   text-align: center;
 }

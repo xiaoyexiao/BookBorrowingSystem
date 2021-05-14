@@ -136,7 +136,7 @@ export default {
   // 加载组件时更新表单
   mounted () {
     this.$axios.post('http://112.74.32.189:8080/library/borrowRecord', {
-      account: '5'
+      account: this.$store.state.id
     }).then((response) => {
       console.log(response.data.data)
       this.oldTableData = response.data.data
