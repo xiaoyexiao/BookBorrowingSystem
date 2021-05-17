@@ -77,16 +77,16 @@ export default {
         email: '',
         phone: '',
         gradeOptions: [{
-          value: '选项1',
+          value: '2017',
           label: '2017级'
         }, {
-          value: '选项2',
+          value: '2018',
           label: '2018级'
         }, {
-          value: '选项3',
+          value: '2019',
           label: '2019级'
         }, {
-          value: '选项4',
+          value: '2020',
           label: '2020级'
         }]
       },
@@ -117,11 +117,18 @@ export default {
   },
   methods: {
     onSubmit () {
-      this.$axios.post('http://112.74.32.189:8080/library/getStudent', {
-        account: this.$store.state.id
+      this.$axios.post('http://112.74.32.189:8080/library/studentRegister', {
+        name: this.form.name,
+        nickname: this.form.nikeName,
+        number: this.form.number,
+        password: this.form.psw,
+        clazz: parseInt(this.form.majorClass.replace(/[^0-9]/ig, '')),
+        grade: parseInt(this.form.grade),
+        major: this.form.majorClass.substring(0, this.form.majorClass.length - 2),
+        email: this.form.email,
+        phone: this.form.phone
       }).then((response) => {
-        console.log(response.data.data)
-        this.personData = response.data.data
+        console.log(response.data)
       })
       this.loading = true
       setTimeout(() => {
