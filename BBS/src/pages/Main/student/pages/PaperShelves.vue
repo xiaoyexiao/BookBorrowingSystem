@@ -22,10 +22,10 @@
           <el-table-column prop="collection.book.category" label="类别" width="150"></el-table-column>
           <el-table-column prop="collection.book.length" label="字数" width="150"></el-table-column>
           <el-table-column prop="collection.book.publisher" label="出版社" width="180"></el-table-column>
-          <el-table-column prop="collection.book.located" label="馆藏地" width="180"></el-table-column>
+          <el-table-column prop="collection.book.located" label="馆藏地" width="100"></el-table-column>
           <el-table-column>
             <template slot="header" slot-scope="scope">
-              <el-input prefix-icon="el-icon-search" v-model="search" style="width: 100px" size="medium" placeholder="输入关键字搜索" @input="searchTable"/>
+              <el-input prefix-icon="el-icon-search" v-model="search" size="mini" placeholder="输入关键字搜索" @input="searchTable"/>
             </template>
             <template slot-scope="scope">
               <el-button icon="el-icon-star-off" circle class="star"
