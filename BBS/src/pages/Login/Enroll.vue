@@ -128,28 +128,33 @@ export default {
         email: this.form.email,
         phone: this.form.phone
       }).then((response) => {
-        console.log(response.data)
+        this.loading = true
+        setTimeout(() => {
+          this.loading = false
+        }, 600)
+        const timeJump = 1
+        // 延时跳转
+        if (!this.timer) {
+          this.second = timeJump
+          this.show = false
+          this.timer = setInterval(() => {
+            if (this.second > 0) {
+              this.second--
+            } else {
+              this.show = true
+              clearInterval(this.timer)
+              this.timer = null
+              this.$router.push('/skipping')
+            }
+          }, 300)
+        }
+      }).catch(() => {
+        this.$message({
+          message: '该学号已被注册！',
+          type: 'error',
+          duration: 800
+        })
       })
-      this.loading = true
-      setTimeout(() => {
-        this.loading = false
-      }, 600)
-      const timeJump = 1
-      // 延时跳转
-      if (!this.timer) {
-        this.second = timeJump
-        this.show = false
-        this.timer = setInterval(() => {
-          if (this.second > 0) {
-            this.second--
-          } else {
-            this.show = true
-            clearInterval(this.timer)
-            this.timer = null
-            this.$router.push('/skipping')
-          }
-        }, 300)
-      }
     },
     resetForm (form) {
       this.$refs[form].resetFields()
