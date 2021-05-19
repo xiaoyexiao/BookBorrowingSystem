@@ -25,6 +25,12 @@ export default {
     window.addEventListener('beforeunload', () => {
       sessionStorage.setItem('store', JSON.stringify(this.$store.state))
     })
+    // 页面初次加载获取所有书籍信息
+    this.$axios.get('http://112.74.32.189:8080/library/books', {params: {}})
+      .then((res) => {
+        let data = res.data.data
+        this.$store.commit('booksConfig', data)
+      })
   }
 }
 </script>

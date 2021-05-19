@@ -273,12 +273,8 @@ export default {
   },
   // 加载组件时更新表单
   mounted () {
-    this.$axios.get('http://112.74.32.189:8080/library/books', {params: {}})
-      .then((response) => {
-        console.log(response.data.data)
-        this.oldTableData = response.data.data
-        this.uploadData = response.data.data
-      })
+    this.oldTableData = this.$store.state.books
+    this.uploadData = this.$store.state.books
   }
 }
 </script>

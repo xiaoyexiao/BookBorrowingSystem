@@ -7,7 +7,8 @@ export default new Vuex.Store({
   state: {
     status: 0, // 1学生 0管理员
     id: '', // 学生或管理员的账号
-    nikeName: ''
+    nikeName: '',
+    books: []
   },
   mutations: {
     setId (state, id) {
@@ -18,17 +19,11 @@ export default new Vuex.Store({
     },
     setNikeName (state, nikeName) {
       state.nikeName = nikeName
+    },
+    booksConfig (state, books) {
+      state.books = books
     }
   },
   getters: {
-    getId (state) {
-      return state.id
-    },
-    getStatus (state) {
-      return state.status
-    },
-    getNikeName (state) {
-      return state.nikeName
-    }
   }
 })

@@ -35,7 +35,7 @@
           <el-table-column>
             <template slot-scope="scope">
               <el-button icon="el-icon-star-off" circle class="star"
-              v-bind:class="['starStyle',{'starColor':scope.row.star}]" @click="clickStar(scope.$index,uploadData)"></el-button>
+              v-bind:class="['starStyle',{'starColor':scope.row.star}]" @click="clickStar(scope.$index)"></el-button>
             </template>
           </el-table-column>
         </el-table>
@@ -149,14 +149,13 @@ export default {
       return row.book.category === value
     },
     // 处理收藏按钮的点击
-    clickStar (index, rows) {
+    clickStar (index) {
       let newIndex = (this.currentPage - 1) * this.pageSize + index
-      // console.log(newIndex)
-      if (!rows[newIndex].star) {
+      if (!this.uploadData[newIndex].star) {
         this.$axios.get('http://112.74.32.189:8080/library/saveCollect', {
           params: {
             account: this.$store.state.id,
-            bookID: rows[newIndex].book.no
+            bookID: this.uploadData[newIndex].book.no
           }
         })
         this.$message({
@@ -164,20 +163,22 @@ export default {
           message: '收藏成功！',
           type: 'success'
         })
-        rows[newIndex].star = true
       } else {
         this.$axios.get('http://112.74.32.189:8080/library/deleteCollect', {
           params: {
             account: this.$store.state.id,
-            bookID: rows[newIndex].book.no
+            bookID: this.uploadData[newIndex].book.no
           }
         })
         this.$message({
           duration: 1000,
           message: '取消收藏！'
         })
-        rows[newIndex].star = false
       }
+      this.uploadData[newIndex].star = !this.uploadData[newIndex].star
+      // console.log(newIndex)
+      // console.log(this.uploadData[newIndex])
+      // console.log(this.uploadData)
     },
     // 实时更新当前页
     handleCurrentChange (val) {
@@ -210,28 +211,25 @@ export default {
         this.sectorStyle.push(obj)
       }
     })
-    this.$axios.get('http://112.74.32.189:8080/library/books', {params: {}})
-      .then((res1) => {
-        this.$axios.get('http://112.74.32.189:8080/library/getCollections', {params: {
-          account: this.$store.state.id
-        }})
-          .then((res2) => {
-            // console.log(res2)
-            let starArray = []
-            res2.data.data.forEach((val) => {
-              starArray.push(val.collection.book.no)
-            })
-            let data = res1.data.data
-            data.forEach((item) => {
-              if (starArray.indexOf(item.book.no) > -1) {
-                item['star'] = true
-              } else {
-                item['star'] = false
-              }
-            })
-            this.oldTableData = data
-            this.uploadData = data
-          })
+    this.$axios.get('http://112.74.32.189:8080/library/getCollections', {params: {
+      account: this.$store.state.id
+    }})
+      .then((res) => {
+        let data = JSON.parse(JSON.stringify(this.$store.state.books))
+        let starArray = []
+        res.data.data.forEach((val) => {
+          starArray.push(val.collection.book.no)
+        })
+        data.forEach((item) => {
+          if (starArray.indexOf(item.book.no) > -1) {
+            item['star'] = true
+          } else {
+            item['star'] = false
+          }
+        })
+        this.$store.commit('booksConfig', data)
+        this.oldTableData = data
+        this.uploadData = data
       })
   }
 }

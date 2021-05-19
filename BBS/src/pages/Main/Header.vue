@@ -4,7 +4,7 @@
       <i class="el-icon-s-fold"></i>
       <span>借阅管理系统</span>
     </div>
-    <el-link :underline="false" :href="`//localhost:8080/${status}/home`" @click.native="backToHome">回到主页<i class="el-icon-house"></i></el-link>
+    <el-link :underline="false" :href="`//localhost:8080/#/${status}/home`" @click.native="backToHome">回到主页<i class="el-icon-house"></i></el-link>
     <el-divider direction="vertical"></el-divider>
       <el-link :underline="false">常用<i class="el-icon-s-operation"></i></el-link>
     <el-divider direction="vertical"></el-divider>
@@ -65,7 +65,7 @@ export default {
       this.$axios.post('http://112.74.32.189:8080/library/getStudent', {
         account: this.account
       }).then((response) => {
-        console.log(response.data)
+        this.nikeName = '管理员'
       })
     }
   }

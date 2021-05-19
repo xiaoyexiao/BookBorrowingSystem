@@ -3,7 +3,7 @@
     <div class="main">
       <div class="table">
         <el-table style="width: 100%" :data="uploadData.slice((currentPage-1)*pageSize,currentPage*pageSize)"
-                  v-loading="loading" height="486">
+                  v-loading="loading">
           <el-table-column width="10"></el-table-column>
           <el-table-column type="expand">
             <template slot-scope="props">
@@ -138,7 +138,7 @@ export default {
       data.forEach((item) => {
         item['star'] = true
       })
-      console.log(data)
+      // console.log(data)
       this.oldTableData = data
       this.uploadData = data
     })

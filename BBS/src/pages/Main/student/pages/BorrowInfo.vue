@@ -3,7 +3,7 @@
     <div class="main">
       <div class="table">
         <el-table style="width: 100%" :data="uploadData.filter(item=>item.visible===true).slice((currentPage-1)*pageSize,currentPage*pageSize)"
-                  v-loading="loading" :default-sort = "{prop: 'borrowDate', order: 'descending'}"  height="485">
+                  v-loading="loading" :default-sort = "{prop: 'borrowDate', order: 'descending'}"  height="555">
           <el-table-column type="expand">
             <template slot-scope="props">
               <el-form label-position="left" inline class="demo-table-expand">
@@ -16,19 +16,19 @@
               </el-form>
             </template>
           </el-table-column>
-          <el-table-column prop="book.name" label="书名" width="120"></el-table-column>
-          <el-table-column prop="book.author" label="作者" width="80"></el-table-column>
-          <el-table-column prop="book.category" label="类别" width="90"></el-table-column>
+          <el-table-column prop="book.name" label="书名" width="140"></el-table-column>
+          <el-table-column prop="book.author" label="作者" width="180"></el-table-column>
+          <el-table-column prop="book.category" label="类别" width="70"></el-table-column>
           <el-table-column prop="book.length" label="字数" width="80"></el-table-column>
-          <el-table-column prop="book.publisher" label="出版社" width="130"></el-table-column>
-          <el-table-column prop="borrowDate" label="借阅日期" width="140" sortable>
+          <el-table-column prop="book.publisher" label="出版社" width="150"></el-table-column>
+          <el-table-column prop="borrowDate" label="借阅日期" width="130" sortable>
             <template slot-scope="scope">
               <i class="el-icon-time"></i>
               <span style="margin-left: 10px">{{ scope.row.borrowDate }}</span>
             </template>
           </el-table-column>
-          <el-table-column prop="status" label="状态" width="200" :formatter="state"  sortable></el-table-column>
-          <el-table-column label="操作" width="80">
+          <el-table-column prop="status" label="状态" width="180" :formatter="state"  sortable></el-table-column>
+          <el-table-column label="操作" width="60">
             <template slot-scope="scope">
               <el-button @click.native.prevent="deleteRow(scope.row,uploadData)" type="text" size="medium">删除</el-button>
             </template>
@@ -64,7 +64,7 @@ export default {
       // 搜索框内容
       search: '',
       // 每页条数
-      pageSize: 7,
+      pageSize: 8,
       // 当前页数
       currentPage: 1
     }
@@ -115,13 +115,13 @@ export default {
           message: '删除成功!'
         })
         if (action === 'confirm') {
-          console.log(row.order)
+          // console.log(row.order)
           this.$axios.get('http://112.74.32.189:8080/library/hideRecord', {
             params: {
               order: row.order
             }
           }).then((response) => {
-            console.log(response.data.data)
+            // console.log(response.data.data)
           })
           for (let i = 0; i < table.length; i++) {
             if (table[i] === row) {
@@ -165,11 +165,11 @@ export default {
   margin-bottom: 0;
 }
 .table{
-  margin: 10px 20px 20px 40px ;
-  width: 1120px;
+  margin: 10px 20px 20px 30px ;
+  width: 1140px;
   height: 500px;
 }
 .pagination{
-  margin: 40px auto;
+  margin: 10px auto;
 }
 </style>
