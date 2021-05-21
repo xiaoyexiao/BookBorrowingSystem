@@ -41,7 +41,7 @@
         </el-table>
         <div class="pagination">
           <el-pagination @current-change="handleCurrentChange" :page-size="pageSize"
-                         layout="total,prev, pager, next, jumper" :total="this.uploadData.length" background >
+                         layout="total,prev, pager, next, jumper" :total="uploadData.filter(item=>item.visible===true).length" background >
           </el-pagination>
         </div>
       </div>
