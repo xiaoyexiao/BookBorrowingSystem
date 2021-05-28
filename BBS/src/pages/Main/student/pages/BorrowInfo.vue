@@ -116,7 +116,7 @@ export default {
         })
         if (action === 'confirm') {
           // console.log(row.order)
-          this.$axios.get('http://112.74.32.189:8080/library/hideRecord', {
+          this.$axios.get(`http://${this.$store.state.url}:8080/library/hideRecord`, {
             params: {
               order: row.order
             }
@@ -135,7 +135,7 @@ export default {
   },
   // 加载组件时更新表单
   mounted () {
-    this.$axios.post('http://112.74.32.189:8080/library/borrowRecord', {
+    this.$axios.post(`http://${this.$store.state.url}:8080/library/borrowRecord`, {
       account: this.$store.state.id
     }).then((response) => {
       console.log(response.data.data)

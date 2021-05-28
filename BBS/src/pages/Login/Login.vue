@@ -71,7 +71,7 @@ export default {
       this.$refs[form].validate((valid) => {
         this.$axios({
           method: 'POST',
-          url: 'http://112.74.32.189:8080/library/login',
+          url: `http://${this.$store.state.url}:8080/library/login`,
           data: {account: this.form.name, password: this.form.psw, isManager: this.form.status !== '用户'}
         }).then((res) => {
           // console.log(res.data.data)

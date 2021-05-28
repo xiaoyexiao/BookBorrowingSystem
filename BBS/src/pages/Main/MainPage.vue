@@ -92,7 +92,7 @@ export default {
     }
   },
   mounted () {
-    this.$axios.get('http://112.74.32.189:8080/library/countCategories', {params: {}})
+    this.$axios.get(`http://${this.$store.state.url}:8080/library/countCategories`, {params: {}})
       .then((response) => {
         // console.log(response.data.data)
         for (let key in response.data.data) { // 遍历键值对

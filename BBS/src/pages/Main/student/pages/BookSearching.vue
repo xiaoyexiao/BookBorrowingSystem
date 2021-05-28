@@ -152,7 +152,7 @@ export default {
     clickStar (index) {
       let newIndex = (this.currentPage - 1) * this.pageSize + index
       if (!this.uploadData[newIndex].star) {
-        this.$axios.get('http://112.74.32.189:8080/library/saveCollect', {
+        this.$axios.get(`http://${this.$store.state.url}:8080/library/saveCollect`, {
           params: {
             account: this.$store.state.id,
             bookID: this.uploadData[newIndex].book.no
@@ -164,7 +164,7 @@ export default {
           type: 'success'
         })
       } else {
-        this.$axios.get('http://112.74.32.189:8080/library/deleteCollect', {
+        this.$axios.get(`http://${this.$store.state.url}:8080/library/deleteCollect`, {
           params: {
             account: this.$store.state.id,
             bookID: this.uploadData[newIndex].book.no
@@ -199,7 +199,7 @@ export default {
   },
   // 加载组件时更新表单
   mounted () {
-    this.$axios.get('http://112.74.32.189:8080/library/countCategories', {
+    this.$axios.get(`http://${this.$store.state.url}:8080/library/countCategories`, {
       params: {}
     }).then((response) => {
       // console.log(response.data.data)
@@ -211,7 +211,7 @@ export default {
         this.sectorStyle.push(obj)
       }
     })
-    this.$axios.get('http://112.74.32.189:8080/library/getCollections', {params: {
+    this.$axios.get(`http://${this.$store.state.url}:8080/library/getCollections`, {params: {
       account: this.$store.state.id
     }})
       .then((res) => {

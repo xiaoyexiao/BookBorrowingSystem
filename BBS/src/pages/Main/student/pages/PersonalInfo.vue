@@ -86,7 +86,7 @@ export default {
         confirmButtonText: '确定',
         type: 'warning'
       }).then((action) => {
-        this.$axios.get('http://112.74.32.189:8080/library/reletBook', {
+        this.$axios.get(`http://${this.$store.state.url}:8080/library/reletBook`, {
           params: {
             order: row.order
           }
@@ -112,13 +112,13 @@ export default {
   // 加载组件时更新表单
   mounted () {
     this.getTableData()
-    this.$axios.post('http://112.74.32.189:8080/library/getStudent', {
+    this.$axios.post(`http://${this.$store.state.url}:8080/library/getStudent`, {
       account: this.$store.state.id
     }).then((response) => {
       // console.log(response.data.data)
       this.personData = response.data.data
     })
-    this.$axios.get('http://112.74.32.189:8080/library/borrowingBook', {
+    this.$axios.get(`http://${this.$store.state.url}:8080/library/borrowingBook`, {
       params: {
         account: this.$store.state.id
       }
@@ -126,7 +126,7 @@ export default {
       // console.log(response.data.data)
       this.table = response.data.data
     })
-    this.$axios.get('http://112.74.32.189:8080/library/recordNumber', {
+    this.$axios.get(`http://${this.$store.state.url}:8080/library/recordNumber`, {
       params: {
         account: this.$store.state.id
       }

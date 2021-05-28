@@ -4,7 +4,7 @@
       <i class="el-icon-s-fold"></i>
       <span>借阅管理系统</span>
     </div>
-    <el-link :underline="false" :href="`http://112.74.32.189/#/${status}/home`" @click.native="backToHome">回到主页<i class="el-icon-house"></i></el-link>
+    <el-link :underline="false" :href="`http://${this.$store.state.url}/#/${status}/home`" @click.native="backToHome">回到主页<i class="el-icon-house"></i></el-link>
     <el-divider direction="vertical"></el-divider>
       <el-link :underline="false">常用<i class="el-icon-s-operation"></i></el-link>
     <el-divider direction="vertical"></el-divider>
@@ -56,13 +56,13 @@ export default {
   mounted () {
     if (this.$store.state.status === 1) {
       // 登录者身份是用户
-      this.$axios.post('http://112.74.32.189:8080/library/getStudent', {
+      this.$axios.post(`http://${this.$store.state.url}:8080/library/getStudent`, {
         account: this.$store.state.id
       }).then((response) => {
         this.nikeName = response.data.data.name
       })
     } else {
-      this.$axios.post('http://112.74.32.189:8080/library/getStudent', {
+      this.$axios.post(`http://${this.$store.state.url}:8080/library/getStudent`, {
         account: this.account
       }).then((response) => {
         this.nikeName = '管理员'

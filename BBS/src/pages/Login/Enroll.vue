@@ -117,7 +117,7 @@ export default {
   },
   methods: {
     onSubmit () {
-      this.$axios.post('http://112.74.32.189:8080/library/studentRegister', {
+      this.$axios.post(`http://${this.$store.state.url}:8080/library/studentRegister`, {
         name: this.form.name,
         nickname: this.form.nikeName,
         number: this.form.number,

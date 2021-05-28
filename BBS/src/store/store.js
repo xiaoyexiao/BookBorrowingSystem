@@ -8,7 +8,8 @@ export default new Vuex.Store({
     status: 0, // 1学生 0管理员
     id: '', // 学生或管理员的账号
     nikeName: '',
-    books: []
+    books: [],
+    url: '120.78.83.241'
   },
   mutations: {
     setId (state, id) {

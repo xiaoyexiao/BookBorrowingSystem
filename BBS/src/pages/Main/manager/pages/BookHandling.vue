@@ -157,7 +157,7 @@ export default {
         status: true
       }
       this.oldTableData.push(obj)
-      this.$axios.post('http://112.74.32.189:8080/library/saveBook', {
+      this.$axios.post(`http://${this.$store.state.url}:8080/library/saveBook`, {
         name: this.bookInfoForm.name,
         author: this.bookInfoForm.author,
         summary: this.bookInfoForm.desc,
@@ -198,7 +198,7 @@ export default {
           message: '下架成功!'
         })
         if (action === 'confirm') {
-          this.$axios.get('http://112.74.32.189:8080/library/deleteBook', {
+          this.$axios.get(`http://${this.$store.state.url}:8080/library/deleteBook`, {
             params: {
               bookID: row.book.no
             }
